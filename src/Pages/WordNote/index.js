@@ -8,9 +8,11 @@ const WordCard = props => (
     <div className={style['card-word']}>{props.word}</div>
     <div className={style['card-remark']}>{props.remark}</div>
     <div className={style['card-operation']}>
-      <button className={style['card-edit']}><img src="./images/edit.png"/></button>
+      <button className={style['card-edit']}>
+        <img src="./images/edit.png" />
+      </button>
       <button className={style['card-del']} onClick={props.del}>
-          <img src="./images/remove.png"/>
+        <img src="./images/remove.png" />
       </button>
     </div>
   </li>
@@ -28,8 +30,6 @@ const createWordCards = props =>
 export default connect(state => ({ words: state }), { addOrUpdate, del })(props => (
   <div className={style['cards']}>
     <Filter prefix="" />
-    <ol>
-        {createWordCards(props)}
-    </ol>
+    <ol>{createWordCards(props)}</ol>
   </div>
 ))
