@@ -5,8 +5,8 @@
   "icons": {
     "16": "images/rw-16.png",
     "32": "images/rw-32.png",
-    "48": "images/rw-32.png",
-    "128": "images/rw-32.png"
+    "48": "images/rw-48.png",
+    "128": "images/rw-128.png"
   },
   "browser_action": {
     "default_popup": "popup.html"
