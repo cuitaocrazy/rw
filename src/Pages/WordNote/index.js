@@ -6,15 +6,13 @@ import style from './wordnode.css'
 const WordCard = props => (
   <li className={style.card}>
     <div className={style['card-word']}>{props.word}</div>
+    <button className={style['card-edit']}>
+      <img src="./images/edit.png" />
+    </button>
     <div className={style['card-remark']}>{props.remark}</div>
-    <div className={style['card-operation']}>
-      <button className={style['card-edit']}>
-        <img src="./images/edit.png" />
-      </button>
-      <button className={style['card-del']} onClick={props.del}>
-        <img src="./images/remove.png" />
-      </button>
-    </div>
+    <button className={style['card-del']} onClick={props.del}>
+        {/*<img src="./images/remove.png" />*/}
+    </button>
   </li>
 )
 
