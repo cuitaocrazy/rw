@@ -1,8 +1,24 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { addOrUpdate, del } from '../../actions'
+import { observer } from 'mobx-react'
+import { addOrOupdate, del } from '../../words-api'
 import style from './wordnode.css'
 
+const AddWord = props => {
+  let wordInput
+  let remarkInput
+  return (
+    <form
+      onSubmit={e => {
+        addOrOupdate(wordInput.value, remarkInput.value)
+        e.preventDefault()
+      }}
+    >
+      <input type="text" ref={el => (wordInput = el)} />
+      <input type="text" ref={el => (remarkInput = el)} />
+      <input type="submit" value="submit" />
+    </form>
+  )
+}
 const WordCard = props => (
   <li className={style.card}>
     <div className={style['card-word']}>{props.word}</div>
@@ -10,9 +26,7 @@ const WordCard = props => (
       <img src="./images/edit.png" />
     </button>
     <div className={style['card-remark']}>{props.remark}</div>
-    <button className={style['card-del']} onClick={props.del}>
-        {/*<img src="./images/remove.png" />*/}
-    </button>
+    <button className={style['card-del']} onClick={() => del(props.word)} />
   </li>
 )
 
@@ -22,12 +36,12 @@ const Filter = props => (
   </div>
 )
 
-const createWordCards = props =>
-  Object.keys(props.words).map(word => <WordCard key={word} word={word} remark={props.words[word]} del={() => props.del(word)} />)
+const createWordCards = words => Object.keys(words).map(word => <WordCard key={word} word={word} remark={words[word]} />)
 
-export default connect(state => ({ words: state }), { addOrUpdate, del })(props => (
+export default observer(props => (
   <div className={style['cards']}>
+    <AddWord />
     <Filter prefix="" />
-    <ol>{createWordCards(props)}</ol>
+    <ol>{createWordCards(props.wordsStore.words)}</ol>
   </div>
 ))

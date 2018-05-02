@@ -1,20 +1,16 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Provider } from 'react-redux'
-import { createStore } from 'redux'
+import { observable } from 'mobx'
 import WordNote from './Pages/WordNote'
-import { wordsReducer } from './reducers'
+import { chget, onChange } from './words-api'
 
-const store = createStore(wordsReducer, {
-  apple: '苹果',
-  banana: '香蕉',
+const wordsStore = observable({
+  words: {},
 })
+
+chget(words => (wordsStore.words = words))
+onChange(words => (wordsStore.words = words))
 
 const container = document.getElementById('container')
 
-render(
-  <Provider store={store}>
-    <WordNote />
-  </Provider>,
-  container
-)
+render(<WordNote wordsStore={wordsStore} />, container)
