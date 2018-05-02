@@ -15,7 +15,7 @@ const AddWord = props => {
     >
       <input type="text" ref={el => (wordInput = el)} />
       <input type="text" ref={el => (remarkInput = el)} />
-      <input type="submit" value="submit" />
+      <input type="submit" value="添加" />
     </form>
   )
 }
