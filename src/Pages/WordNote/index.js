@@ -7,7 +7,9 @@ const WordCard = props => (
   <div className={style.card}>
     <div className={style['card-operation']}>
       <button className={style['card-edit']}>编辑</button>
-      <button className={style['card-del']}>删除</button>
+      <button className={style['card-del']} onClick={props.del}>
+        删除
+      </button>
     </div>
     <div className={style['card-word']}>{props.word}</div>
     <div className={style['card-remark']}>{props.remark}</div>
@@ -20,7 +22,8 @@ const Filter = props => (
   </div>
 )
 
-const createWordCards = props => Object.keys(props.words).map(word => <WordCard key={word} word={word} remark={props.words[word]} />)
+const createWordCards = props =>
+  Object.keys(props.words).map(word => <WordCard key={word} word={word} remark={props.words[word]} del={() => props.del(word)} />)
 
 export default connect(state => ({ words: state }), { addOrUpdate, del })(props => (
   <div className={style['cards']}>
