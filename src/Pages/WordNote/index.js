@@ -4,16 +4,16 @@ import { addOrUpdate, del } from '../../actions'
 import style from './wordnode.css'
 
 const WordCard = props => (
-  <div className={style.card}>
-    <div className={style['card-operation']}>
-      <button className={style['card-edit']}>编辑</button>
-      <button className={style['card-del']} onClick={props.del}>
-        删除
-      </button>
-    </div>
+  <li className={style.card}>
     <div className={style['card-word']}>{props.word}</div>
     <div className={style['card-remark']}>{props.remark}</div>
-  </div>
+    <div className={style['card-operation']}>
+      <button className={style['card-edit']}><img src="./images/edit.png"/></button>
+      <button className={style['card-del']} onClick={props.del}>
+          <img src="./images/remove.png"/>
+      </button>
+    </div>
+  </li>
 )
 
 const Filter = props => (
@@ -28,6 +28,8 @@ const createWordCards = props =>
 export default connect(state => ({ words: state }), { addOrUpdate, del })(props => (
   <div className={style['cards']}>
     <Filter prefix="" />
-    {createWordCards(props)}
+    <ol>
+        {createWordCards(props)}
+    </ol>
   </div>
 ))
