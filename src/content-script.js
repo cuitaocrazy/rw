@@ -2,7 +2,7 @@ import { chget } from './words-api'
 import { curry } from 'ramda'
 const tagSet = new Set(['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'B', 'SMALL', 'STRONG', 'Q', 'DIV', 'SPAN', 'LI'])
 
-const filter = node => tagSet.has(node.parentNode.tagName) && node.textContent.trim().length > 3
+const filter = node => tagSet.has(node.parentNode.tagName) && node.textContent.trim().length > 6
 /**
  *
  * @param {Node} el html element
@@ -37,7 +37,7 @@ function* transformTextNode(node, getWords) {
     if (beginIndex != match.index) {
       yield document.createTextNode(text.slice(beginIndex, match.index))
     }
-    const span = document.createElement('span')
+    const span = document.createElement('rw-span')
     span.setAttribute('style', 'border: 1px solid coral')
     span.textContent = match[0]
     yield span
@@ -60,4 +60,25 @@ document.addEventListener('DOMContentLoaded', function(event) {
       node.parentElement.removeChild(node)
     }
   })
+
+  createBubble()
 })
+
+const createBubble = () => {
+  const bubble = document.createElement('div')
+  bubble.setAttribute('id', 'rw-bubble')
+  const word = document.createElement('div')
+  bubble.setAttribute('id', 'rw-word')
+  const remark = document.createElement('div')
+  bubble.setAttribute('id', 'rw-remark')
+  bubble.appendChild(word)
+  bubble.appendChild(remark)
+  document.body.appendChild(bubble)
+
+  document.addEventListener('mousemove', evt => {
+    const currentNode = document.elementFromPoint(evt.clientX, evt.clientY)
+    if (currentNode.tagName === 'rw-span') {
+      console.log(currentNode)
+    }
+  })
+}
