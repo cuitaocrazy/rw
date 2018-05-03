@@ -1,5 +1,6 @@
 import { chget } from './words-api'
 import { curry } from 'ramda'
+
 const tagSet = new Set(['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'B', 'SMALL', 'STRONG', 'Q', 'DIV', 'SPAN', 'LI'])
 
 const filter = node => tagSet.has(node.parentNode.tagName) && node.textContent.trim().length > 6
@@ -51,7 +52,11 @@ function* transformTextNode(node, getWords) {
 
 document.addEventListener('DOMContentLoaded', function(event) {
   chget(words => {
-    const _getWords = getWords('\\b' + Object.keys(words).join('\\b|\\b') + '\\b')
+    const keys = Object.keys(words)
+    if (keys.length == 0) {
+      return
+    }
+    const _getWords = getWords('\\b' + keys.join('\\b|\\b') + '\\b')
     for (const node of Array.from(getTextNodes(document.body))) {
       const newNodes = transformTextNode(node, _getWords)
       for (const nn of newNodes) {
@@ -59,26 +64,40 @@ document.addEventListener('DOMContentLoaded', function(event) {
       }
       node.parentElement.removeChild(node)
     }
-  })
 
-  createBubble()
+    createBubble(words)
+  })
 })
 
-const createBubble = () => {
+const createBubble = words => {
   const bubble = document.createElement('div')
   bubble.setAttribute('id', 'rw-bubble')
+  bubble.setAttribute('style', 'visibility: hidden')
   const word = document.createElement('div')
-  bubble.setAttribute('id', 'rw-word')
+  word.setAttribute('id', 'rw-word')
   const remark = document.createElement('div')
-  bubble.setAttribute('id', 'rw-remark')
+  remark.setAttribute('id', 'rw-remark')
   bubble.appendChild(word)
   bubble.appendChild(remark)
   document.body.appendChild(bubble)
 
   document.addEventListener('mousemove', evt => {
     const currentNode = document.elementFromPoint(evt.clientX, evt.clientY)
-    if (currentNode.tagName === 'rw-span') {
-      console.log(currentNode)
+    if (currentNode.tagName === 'RW-SPAN') {
+      if (bubble.style.visibility === 'hidden') {
+        const key = currentNode.textContent.toLowerCase()
+        word.textContent = key
+        remark.textContent = words[key]
+        const rect = currentNode.getBoundingClientRect()
+        const bubbleRect = bubble.getBoundingClientRect()
+        bubble.style.top = rect.bottom + 'px'
+        bubble.style.left = Math.max(5, Math.floor((rect.left + rect.right) / 2 - bubbleRect.width / 2)) + 'px'
+        bubble.style.visibility = 'visible'
+      }
+    } else {
+      bubble.style.visibility = 'hidden'
     }
   })
+
+  window.addEventListener('scroll', () => (bubble.style.visibility = 'hidden'))
 }
