@@ -51,7 +51,7 @@ function* transformTextNode(node, getWords) {
 
 document.addEventListener('DOMContentLoaded', function(event) {
   chget(words => {
-    const _getWords = getWords(Object.keys(words).join('|'))
+    const _getWords = getWords('\\b' + Object.keys(words).join('\\b|\\b') + '\\b')
     for (const node of Array.from(getTextNodes(document.body))) {
       const newNodes = transformTextNode(node, _getWords)
       for (const nn of newNodes) {
