@@ -32,7 +32,9 @@ const WordCard = props => (
 
 const Filter = props => (
   <div className={style['filter-content']}>
-    <input type="text" className={style['filter-control']} value={props.prefix} onChange={evt => (props.prefix = evt.target.value)} />
+    <input type="text" className={style['filter-control']} value={props.prefix} onChange={evt => (props.prefix = evt.target.value)}
+       placeholder="快速查找"/>
+    <img className={style['filter-icon']} src="./images/search.png" />
   </div>
 )
 
