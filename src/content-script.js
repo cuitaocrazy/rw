@@ -1,3 +1,5 @@
+import { chget } from './words-api'
+import { curry } from 'ramda'
 const tagSet = new Set(['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'B', 'SMALL', 'STRONG', 'Q', 'DIV', 'SPAN', 'LI'])
 
 const filter = node => tagSet.has(node.parentNode.tagName) && node.textContent.trim().length > 3
@@ -12,8 +14,50 @@ function* getTextNodes(el) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', function(event) {
-  for (const node of Array.from(getTextNodes(document.body))) {
-    // node.parentElement.removeChild(node)
+const getWords = curry(function* getWords(regStr, text) {
+  const regWord = new RegExp(regStr, 'gi')
+  let match = regWord.exec(text)
+
+  while (match) {
+    yield match
+    match = regWord.exec(text)
   }
+})
+
+/**
+ *
+ * @param {*} node
+ * @param {*} getWords
+ */
+function* transformTextNode(node, getWords) {
+  const text = node.textContent
+  const matchIter = getWords(text)
+  let beginIndex = 0
+  for (const match of matchIter) {
+    if (beginIndex != match.index) {
+      yield document.createTextNode(text.slice(beginIndex, match.index))
+    }
+    const span = document.createElement('span')
+    span.setAttribute('style', 'background-color: red')
+    span.textContent = match[0]
+    yield span
+    beginIndex = match.index + match[0].length
+  }
+
+  if (beginIndex != text.length) {
+    yield document.createTextNode(text.slice(beginIndex))
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function(event) {
+  chget(words => {
+    const _getWords = getWords(Object.keys(words).join('|'))
+    for (const node of Array.from(getTextNodes(document.body))) {
+      const newNodes = transformTextNode(node, _getWords)
+      for (const nn of newNodes) {
+        node.parentElement.insertBefore(nn, node)
+      }
+      node.parentElement.removeChild(node)
+    }
+  })
 })
