@@ -38,7 +38,7 @@ function* transformTextNode(node, getWords) {
       yield document.createTextNode(text.slice(beginIndex, match.index))
     }
     const span = document.createElement('span')
-    span.setAttribute('style', 'background-color: red')
+    span.setAttribute('style', 'border: 1px solid coral')
     span.textContent = match[0]
     yield span
     beginIndex = match.index + match[0].length
