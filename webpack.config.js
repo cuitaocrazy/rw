@@ -4,6 +4,7 @@ module.exports = {
   entry: {
     popup: './src/popup.js',
     wordnote: './src/wordnote.js',
+    content_script: './src/content-script.js',
   },
   output: {
     path: path.resolve('./extensions'),
