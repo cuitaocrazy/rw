@@ -1,4 +1,4 @@
-import { chget } from './words-api'
+import { chget, chset } from './words-api'
 import { curry } from 'ramda'
 
 const tagSet = new Set(['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'B', 'SMALL', 'STRONG', 'Q', 'DIV', 'SPAN', 'LI'])
@@ -52,6 +52,7 @@ function* transformTextNode(node, getWords) {
 
 document.addEventListener('DOMContentLoaded', function(event) {
   chget(words => {
+    createAddWordBubble()
     const keys = Object.keys(words)
     if (keys.length == 0) {
       return
@@ -85,23 +86,83 @@ const createBubble = words => {
     const currentNode = document.elementFromPoint(evt.clientX, evt.clientY)
     if (currentNode.tagName === 'RW-SPAN') {
       if (bubble.style.visibility === 'hidden') {
-      const key = currentNode.textContent.toLowerCase()
-      word.textContent = key
-      remark.textContent = words[key]
-      const rect = currentNode.getBoundingClientRect()
-      const bubbleRect = bubble.getBoundingClientRect()
-      bubble.style.top = rect.bottom + 'px'
-      bubble.style.left = Math.max(5, Math.floor(rect.left)) + 'px'
-      // bubble.style.left = Math.max(5, Math.floor((rect.left + rect.right) /2 - bubbleRect.width / 2)) + 'px'
-      bubble.classList.add('rw-show')
-      // bubble.style.visibility = 'visible'
+        const key = currentNode.textContent.toLowerCase()
+        word.textContent = key
+        remark.textContent = words[key]
+        const rect = currentNode.getBoundingClientRect()
+        bubble.style.top = rect.bottom + 'px'
+        bubble.style.left = Math.max(5, Math.floor(rect.left)) + 'px'
+        bubble.classList.add('rw-show')
       }
     } else {
       bubble.classList.remove('rw-show')
-      // bubble.style.visibility = 'hidden'
     }
   })
 
-  window.addEventListener('scroll', () => (bubble.classList.remove('rw-show')))
-  // window.addEventListener('scroll', () => (bubble.style.visibility = 'hidden'))
+  window.addEventListener('scroll', () => bubble.classList.remove('rw-show'))
 }
+
+const createAddWordBubble = () => {
+  const container = document.createElement('div')
+  container.setAttribute('id', 'rw-add-word-bubble')
+  container.setAttribute('style', 'visibility: hidden')
+  const btn = document.createElement('div')
+  btn.setAttribute('id', 'rw-add-word-bubble-btn')
+
+  container.appendChild(btn)
+  document.body.appendChild(container)
+
+  document.addEventListener('mouseup', evt => {
+    setTimeout(() => {
+      const calcLoc = () => {
+        const gtx = document.getElementById('gtx-trans')
+
+        if (gtx) {
+          const rect = gtx.getBoundingClientRect()
+          return {
+            top: rect.top + 'px',
+            left: rect.left + rect.width + 'px',
+          }
+        } else {
+          return {
+            top: evt.clientY + 'px',
+            left: evt.clientX + 'px',
+          }
+        }
+      }
+      const selectedText = window
+        .getSelection()
+        .toString()
+        .trim()
+
+      if (selectedText && /^\b\w+\b$/.test(selectedText)) {
+        if (container.style.visibility === 'hidden') {
+          container.style.visibility = 'visible'
+          const loc = calcLoc()
+          container.style.top = loc.top
+          container.style.left = loc.left
+
+          btn.addEventListener(
+            'click',
+            () => {
+              chget(words => {
+                words[selectedText.toLowerCase()] = selectedText
+                chset(words, () => {})
+              })
+            },
+            true
+          )
+        }
+      } else {
+        container.style.visibility = 'hidden'
+      }
+    }, 10)
+  })
+}
+
+// document.addEventListener('selectionchange', e => {
+//   const selection = window.getSelection()
+//   console.log(selection)
+//   console.log(selection.toString())
+//   // console.log(selection.focusNode.textContent.slice(selection.anchorOffset, selection.extentOffset))
+// })
