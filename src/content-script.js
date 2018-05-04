@@ -93,15 +93,15 @@ const createBubble = words => {
       bubble.style.top = rect.bottom + 'px'
       bubble.style.left = Math.max(5, Math.floor(rect.left)) + 'px'
       // bubble.style.left = Math.max(5, Math.floor((rect.left + rect.right) /2 - bubbleRect.width / 2)) + 'px'
-      bubble.classList.add('show')
+      bubble.classList.add('rw-show')
       // bubble.style.visibility = 'visible'
       }
     } else {
-      bubble.classList.remove('show')
+      bubble.classList.remove('rw-show')
       // bubble.style.visibility = 'hidden'
     }
   })
 
-  window.addEventListener('scroll', () => (bubble.classList.remove('show')))
+  window.addEventListener('scroll', () => (bubble.classList.remove('rw-show')))
   // window.addEventListener('scroll', () => (bubble.style.visibility = 'hidden'))
 }
