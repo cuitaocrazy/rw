@@ -39,7 +39,7 @@ function* transformTextNode(node, getWords) {
       yield document.createTextNode(text.slice(beginIndex, match.index))
     }
     const span = document.createElement('rw-span')
-    span.setAttribute('style', 'border: 1px solid coral')
+    span.setAttribute('class', 'rw-span')
     span.textContent = match[0]
     yield span
     beginIndex = match.index + match[0].length
@@ -85,19 +85,23 @@ const createBubble = words => {
     const currentNode = document.elementFromPoint(evt.clientX, evt.clientY)
     if (currentNode.tagName === 'RW-SPAN') {
       if (bubble.style.visibility === 'hidden') {
-        const key = currentNode.textContent.toLowerCase()
-        word.textContent = key
-        remark.textContent = words[key]
-        const rect = currentNode.getBoundingClientRect()
-        const bubbleRect = bubble.getBoundingClientRect()
-        bubble.style.top = rect.bottom + 'px'
-        bubble.style.left = Math.max(5, Math.floor((rect.left + rect.right) / 2 - bubbleRect.width / 2)) + 'px'
-        bubble.style.visibility = 'visible'
+      const key = currentNode.textContent.toLowerCase()
+      word.textContent = key
+      remark.textContent = words[key]
+      const rect = currentNode.getBoundingClientRect()
+      const bubbleRect = bubble.getBoundingClientRect()
+      bubble.style.top = rect.bottom + 'px'
+      bubble.style.left = Math.max(5, Math.floor(rect.left)) + 'px'
+      // bubble.style.left = Math.max(5, Math.floor((rect.left + rect.right) /2 - bubbleRect.width / 2)) + 'px'
+      bubble.classList.add('show')
+      // bubble.style.visibility = 'visible'
       }
     } else {
-      bubble.style.visibility = 'hidden'
+      bubble.classList.remove('show')
+      // bubble.style.visibility = 'hidden'
     }
   })
 
-  window.addEventListener('scroll', () => (bubble.style.visibility = 'hidden'))
+  window.addEventListener('scroll', () => (bubble.classList.remove('show')))
+  // window.addEventListener('scroll', () => (bubble.style.visibility = 'hidden'))
 }

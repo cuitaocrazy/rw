@@ -1,10 +1,89 @@
 #rw-bubble {
   position: fixed;
-  background-color: white;
+  z-index: 1000;
+  visibility: hidden;
   padding: 16px;
-  border: 1px solid rgb(187, 187, 187);
+  color: #111;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  border-left: 1px solid rgba(221,20,147,.5);
+  border-right: 1px solid rgba(221,20,147,.5);
+  background-color: white;
+  transform: translateX(50px);
+  opacity: 0;
 }
-
-/* html {
-  background-color: red;
-} */
+#rw-bubble.show{
+  visibility: visible !important;
+  animation: show cubic-bezier(0,-0.05,0,1.25) .2s forwards;
+}
+@keyframes show {
+  100%{
+    opacity: .95;
+    transform: translateX(0);
+  }
+}
+#rw-bubble:after,
+#rw-bubble:before{
+  position: absolute;
+  display: block;
+  content: '';
+  left: 0;
+  right: 0;
+  height: 5px;
+  background-color: rgba(221,20,147,.5);
+}
+#rw-bubble:after{
+  top: 0;
+}
+#rw-bubble:before{
+  bottom: 0;
+}
+.rw-span{
+  position: relative;
+  padding: 2px;
+  color: #dd1493!important;
+  font-weight: 300;
+  text-shadow: 1px 1px 1px rgba(255,69,0,.1);
+}
+.rw-span:before,
+.rw-span:after{
+  position: absolute;
+  z-index: 999;
+  display: block;
+  content: '';
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border: 1px rgba(221,20,147,.5) solid;
+  opacity: 0;
+  transition: all ease .2s;
+}
+.rw-span:after{
+  border-left: none;
+  border-top: none;
+  transform: translate(5px ,5px);
+}
+.rw-span:before{
+  border-right: none;
+  border-bottom: none;
+  transform: translate(-5px ,-5px);
+}
+.rw-span:hover:before,
+.rw-span:hover:after{
+  transform: translate(0 ,0);
+  opacity: 1;
+}
+#rw-word{
+  color: #dd1493;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: capitalize;
+}
+#rw-remark{
+  color: #333;
+  font-size: 14px;
+  font-weight: 700;
+}
