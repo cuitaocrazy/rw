@@ -3,6 +3,7 @@ import { observer } from 'mobx-react'
 import { observable } from 'mobx'
 import { addOrOupdate, del } from '../../words-api'
 import style from './wordnode.css'
+import { pick, keys, filter, chain, compose } from 'ramda'
 
 const AddWord = props => {
   let wordInput
@@ -50,25 +51,34 @@ const WordCard = observer(props => {
         <div className={style['card-remark']}>{props.cardState.remark}</div>
       )}
 
-      <button className={style['card-del']} onClick={() => del(props.word)} />
+      <button className={style['card-del']} onClick={() => del(props.cardState.word)} />
     </li>
   )
 })
 
-const Filter = props => (
+const Filter = observer(props => (
   <div className={style['filter-content']}>
-    <input type="text" className={style['filter-control']} value={props.prefix} onChange={evt => (props.prefix = evt.target.value)} placeholder="快速查找" />
+    <input
+      type="text"
+      className={style['filter-control']}
+      value={props.prefix.get()}
+      onChange={evt => props.prefix.set(evt.target.value)}
+      placeholder="快速查找"
+    />
     <img className={style['filter-icon']} src="./images/search.png" />
   </div>
-)
+))
 
 const createWordCards = words =>
   Object.keys(words).map(word => <WordCard key={word} cardState={observable({ isEdit: false, word: word, remark: words[word] })} />)
 
-export default observer(props => (
-  <div className={style['cards']}>
-    <AddWord />
-    <Filter prefix="" />
-    <ol>{createWordCards(props.wordsStore.words)}</ol>
-  </div>
-))
+const prefix = observable.box('')
+export default observer(props => {
+  return (
+    <div className={style['cards']}>
+      <AddWord />
+      <Filter prefix={prefix} />
+      <ol>{createWordCards(chain(pick)(compose(filter(v => v.indexOf(prefix.get()) != -1), keys))(props.wordsStore.words))}</ol>
+    </div>
+  )
+})

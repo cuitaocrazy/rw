@@ -50,6 +50,16 @@ function* transformTextNode(node, getWords) {
   }
 }
 
+const effectDom = keys => {
+  const _getWords = getWords('\\b' + keys.join('\\b|\\b') + '\\b')
+  for (const node of Array.from(getTextNodes(document.body))) {
+    const newNodes = transformTextNode(node, _getWords)
+    for (const nn of newNodes) {
+      node.parentElement.insertBefore(nn, node)
+    }
+    node.parentElement.removeChild(node)
+  }
+}
 document.addEventListener('DOMContentLoaded', function(event) {
   chget(words => {
     createAddWordBubble()
@@ -57,14 +67,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     if (keys.length == 0) {
       return
     }
-    const _getWords = getWords('\\b' + keys.join('\\b|\\b') + '\\b')
-    for (const node of Array.from(getTextNodes(document.body))) {
-      const newNodes = transformTextNode(node, _getWords)
-      for (const nn of newNodes) {
-        node.parentElement.insertBefore(nn, node)
-      }
-      node.parentElement.removeChild(node)
-    }
+    effectDom(keys)
 
     createBubble(words)
   })
@@ -84,7 +87,7 @@ const createBubble = words => {
 
   document.addEventListener('mousemove', evt => {
     const currentNode = document.elementFromPoint(evt.clientX, evt.clientY)
-    if (currentNode.tagName === 'RW-SPAN') {
+    if (currentNode && currentNode.tagName === 'RW-SPAN') {
       if (bubble.style.visibility === 'hidden') {
         const key = currentNode.textContent.toLowerCase()
         word.textContent = key
@@ -147,7 +150,9 @@ const createAddWordBubble = () => {
             () => {
               chget(words => {
                 words[selectedText.toLowerCase()] = selectedText
-                chset(words, () => {})
+                chset(words, () => {
+                  effectDom([selectedText])
+                })
               })
             },
             true
