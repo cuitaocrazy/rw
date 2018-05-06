@@ -110,6 +110,7 @@
   border-radius: 5px;
   padding: 3px;
   background-color: rgb(245, 245, 245);
+  z-index: 2147483647;
 }
 
 #rw-add-word-bubble-btn {

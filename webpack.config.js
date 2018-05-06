@@ -5,6 +5,7 @@ module.exports = {
     popup: './src/popup.js',
     wordnote: './src/wordnote.js',
     ['content-script']: './src/content-script.js',
+    background: './src/background.js',
   },
   output: {
     path: path.resolve('./extensions'),

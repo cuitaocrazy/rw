@@ -60,6 +60,7 @@ const effectDom = keys => {
     node.parentElement.removeChild(node)
   }
 }
+
 document.addEventListener('DOMContentLoaded', function(event) {
   chget(words => {
     createAddWordBubble()
@@ -81,14 +82,16 @@ const createBubble = words => {
   word.setAttribute('id', 'rw-word')
   const remark = document.createElement('div')
   remark.setAttribute('id', 'rw-remark')
+  const gtEl = document.createElement('div')
   bubble.appendChild(word)
   bubble.appendChild(remark)
+  bubble.appendChild(gtEl)
   document.body.appendChild(bubble)
 
   document.addEventListener('mousemove', evt => {
     const currentNode = document.elementFromPoint(evt.clientX, evt.clientY)
     if (currentNode && currentNode.tagName === 'RW-SPAN') {
-      if (bubble.style.visibility === 'hidden') {
+      if (window.getComputedStyle(bubble).visibility === 'hidden') {
         const key = currentNode.textContent.toLowerCase()
         word.textContent = key
         remark.textContent = words[key]
@@ -96,6 +99,30 @@ const createBubble = words => {
         bubble.style.top = rect.bottom + 'px'
         bubble.style.left = Math.max(5, Math.floor(rect.left)) + 'px'
         bubble.classList.add('rw-show')
+        gtEl.textContent = ''
+        gt(key).then(data => {
+          if (window.getComputedStyle(bubble).visibility !== 'hidden') {
+            const explanations = data[1]
+            if (!explanations) {
+              return
+            }
+            const root = document.createElement('ul')
+            explanations.forEach(exp => {
+              const li = document.createElement('li')
+              li.textContent = exp[0]
+              const ul = document.createElement('ul')
+              li.appendChild(ul)
+              root.appendChild(li)
+              exp[1].forEach(tw => {
+                const twLi = document.createElement('li')
+                twLi.textContent = tw
+                ul.appendChild(twLi)
+              })
+            })
+            // gtEl.textContent = JSON.stringify(data)
+            gtEl.appendChild(root)
+          }
+        })
       }
     } else {
       bubble.classList.remove('rw-show')
@@ -171,3 +198,13 @@ const createAddWordBubble = () => {
 //   console.log(selection.toString())
 //   // console.log(selection.focusNode.textContent.slice(selection.anchorOffset, selection.extentOffset))
 // })
+
+// const dts = '&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t'
+const dts = '&dt=bd'
+const gt = word =>
+  new Promise((resolve, reject) =>
+    chrome.runtime.sendMessage({ evtType: 'rw-tw', word, dts }, function(response) {
+      // console.log(response.data)
+      resolve(response.data)
+    })
+  )

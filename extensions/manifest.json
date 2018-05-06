@@ -1,6 +1,6 @@
 {
   "name": "背单词",
-  "version": "1.1",
+  "version": "1.2",
   "manifest_version": 2,
   "icons": {
     "16": "images/rw-16.png",
@@ -20,5 +20,9 @@
       "matches": ["<all_urls>"],
       "run_at": "document_start"
     }
-  ]
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  }
 }
