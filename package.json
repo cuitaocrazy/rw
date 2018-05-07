@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "rm -f extensions.zip && rm -f extentions/*.js && webpack --mode production && zip -r extensions.zip ./extensions/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
