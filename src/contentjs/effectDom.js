@@ -13,7 +13,7 @@ function* getTextNodes(el) {
 }
 
 const getWords = regStr => text =>
-  function* getWords(regStr, text) {
+  (function* getWords(regStr, text) {
     const regWord = new RegExp(regStr, 'gi')
     let match = regWord.exec(text)
 
@@ -21,7 +21,7 @@ const getWords = regStr => text =>
       yield match
       match = regWord.exec(text)
     }
-  }
+  })(regStr, text)
 
 /**
  *
