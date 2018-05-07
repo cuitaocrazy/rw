@@ -28,12 +28,13 @@ export default class WordCard extends React.Component {
   makeGoogleDisplay(data) {
     return (
       <ul>
-        {data[1].map(ex => (
-          <li key={ex[0]}>
-            {ex[0]}
-            <ul>{ex[1].map(w => <li key={w}>{w}</li>)}</ul>
-          </li>
-        ))}
+        {data[1] &&
+          data[1].map(ex => (
+            <li key={ex[0]}>
+              {ex[0]}
+              <ul>{ex[1] && ex[1].map(w => <li key={w}>{w}</li>)}</ul>
+            </li>
+          ))}
       </ul>
     )
   }
