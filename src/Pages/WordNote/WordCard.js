@@ -1,6 +1,7 @@
 import React from 'react'
 import style from './wordnode.css'
 import { addOrOupdate, del } from '../../words-api'
+import { gt } from '../../gt-api'
 
 /**
  *
@@ -16,6 +17,25 @@ export default class WordCard extends React.Component {
     this.setEditing = editing => this.setState({ editing })
     this.setRemark = remark => this.setState({ remark })
     this.reset = () => this.setState({ editing: false, remark: props.remark })
+    this.dogt = () => gt(props.word).then(data => this.setState({ gt: data }))
+  }
+
+  /**
+   *
+   * @param {*} data
+   * @return {*}
+   */
+  makeGoogleDisplay(data) {
+    return (
+      <ul>
+        {data[1].map(ex => (
+          <li key={ex[0]}>
+            {ex[0]}
+            <ul>{ex[1].map(w => <li key={w}>{w}</li>)}</ul>
+          </li>
+        ))}
+      </ul>
+    )
   }
 
   /**
@@ -50,6 +70,7 @@ export default class WordCard extends React.Component {
         ) : (
           <div className={style['card-remark']}>{this.props.remark}</div>
         )}
+        {this.state.gt ? this.makeGoogleDisplay(this.state.gt) : <button onClick={() => this.dogt()}>google</button>}
 
         <button className={style['card-del']} onClick={() => del(this.props.word)} />
       </li>
