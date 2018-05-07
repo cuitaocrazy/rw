@@ -10,7 +10,7 @@ function updateTkk() {
     .then(res => res.text())
     .then(txt => regex.exec(txt)[1])
     .then(js => eval(eval('"' + js + '"')))
-    .then(tkk => new Promise((resolve, reject) => chrome.storage.local.set({ tkk: tkk }, () => resolve(tkk))))
+    .then(tkk => new Promise((resolve, reject) => chrome.storage.local.set({ tkk: tkk, timestamp: Math.floor(Date.now() / 3600000) }, () => resolve(tkk))))
 }
 
 /**
