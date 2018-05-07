@@ -1,5 +1,3 @@
-import { curry } from 'ramda'
-
 const tagSet = new Set(['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'B', 'SMALL', 'STRONG', 'Q', 'DIV', 'SPAN', 'LI'])
 
 const filter = node => tagSet.has(node.parentNode.tagName) && node.textContent.trim().length > 6
@@ -14,15 +12,16 @@ function* getTextNodes(el) {
   }
 }
 
-const getWords = curry(function* getWords(regStr, text) {
-  const regWord = new RegExp(regStr, 'gi')
-  let match = regWord.exec(text)
+const getWords = regStr => text =>
+  function* getWords(regStr, text) {
+    const regWord = new RegExp(regStr, 'gi')
+    let match = regWord.exec(text)
 
-  while (match) {
-    yield match
-    match = regWord.exec(text)
+    while (match) {
+      yield match
+      match = regWord.exec(text)
+    }
   }
-})
 
 /**
  *

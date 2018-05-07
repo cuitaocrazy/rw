@@ -1,6 +1,6 @@
 {
   "name": "背单词",
-  "version": "1.2",
+  "version": "1.4",
   "manifest_version": 2,
   "icons": {
     "16": "images/rw-16.png",
