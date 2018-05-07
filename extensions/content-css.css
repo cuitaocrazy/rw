@@ -7,56 +7,59 @@
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 1px;
-  border-left: 1px solid rgba(221, 20, 147, 0.5);
-  border-right: 1px solid rgba(221, 20, 147, 0.5);
+  border-left: 1px solid rgba(221,20,147,.5);
+  border-right: 1px solid rgba(221,20,147,.5);
   background-color: white;
   transform: translateX(50px);
   opacity: 0;
 }
-#rw-bubble.rw-show {
+#rw-bubble.rw-show{
   visibility: visible !important;
-  animation: show cubic-bezier(0, -0.05, 0, 1.25) 0.2s forwards;
+  animation: show cubic-bezier(0,-0.05,0,1.25) .2s forwards;
 }
 @keyframes show {
-  100% {
-    opacity: 0.95;
+  100%{
+    opacity: .95;
     transform: translateX(0);
   }
 }
 #rw-bubble:after,
-#rw-bubble:before {
+#rw-bubble:before{
   position: absolute;
   display: block;
   content: '';
   left: 0;
   right: 0;
   height: 5px;
-  background-color: rgba(221, 20, 147, 0.5);
+  background-color: rgba(221,20,147,.5);
 }
-#rw-bubble:after {
+#rw-bubble:after{
   top: 0;
 }
-#rw-bubble:before {
+#rw-bubble:before{
   bottom: 0;
 }
-.rw-span {
+.rw-span{
   position: relative;
   padding: 2px;
-  color: #dd1493 !important;
+  color: #dd1493!important;
   font-weight: 300;
-  text-shadow: 1px 1px 1px rgba(255, 69, 0, 0.1);
+  text-shadow: 1px 1px 1px rgba(255,69,0,.1);
 }
-.rw-span:after {
+.rw-span:after{
   position: absolute;
   z-index: 999;
   display: block;
   content: '';
-  right: -8px;
-  top: -5px;
-  width: 16px;
-  height: 16px;
-  background: 100% 100%
-    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAB5UlEQVQ4jXWRP4gTQRSHvzebP8YkGlm9wtzlEokoKkgasVEUwUJEbLQQ7KxUECwsrtFWsbSzEbETsblWuzSiByeI2ngSL7AkJvFMTDZ7OzsWl4Ts3eYHD2bezPvm9+YJI5Xm9gPEgFfamKeu9j/utmJXROS0q/0lSxQxpV6clF33tTHt5UYdAJkCXJxPpa9dXSzf2JtImriyBq72M57WyWwi0QboeEPb/eW0lrvNR9WG82z84ljP7x6vXL9ULN/aDAKAtACIYIyxAZRS1P8E9mbv38Mq7ACIJcoVBEuEkEZ7EUFESKEyk6OpFmpJZfnFdLYUYIiW4PX7dLTvrjYaqe0OuHes8uDc/OJrMwsgCufTF94111kdpUKAE/aBHwuZPcxyICKYeJJ9WJMLIcBK06HqrM+wvwWo/O2GciHA+XyBcs6OLA6MIRCodVdY7XVUJGCtu8H7eg3fhFswGI7mbM7kCxgDeeJvIwGHsjkuLJRmOtCjv2njn4oE/HYHfP3ZIpgyYDCcPVggFYshamvqQ8xcJEAELhcPh6YggKd1aC5HJPVyvFbT9XYyZVzt42k9ieG2YoDvZnAzCuB967QkphQyenlnCErAm0JOt3D78ecPd5x+b81SKk2ERIT2huO/Md0n49x/OrW9e2ElT4QAAAAASUVORK5CYII=');
+  right: -6px;
+  top: -10px;
+  width:12px;
+  height: 12px;
+  background-size: contain;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAB5UlEQVQ4jXWRP4gTQRSHvzebP8YkGlm9wtzlEokoKkgasVEUwUJEbLQQ7KxUECwsrtFWsbSzEbETsblWuzSiByeI2ngSL7AkJvFMTDZ7OzsWl4Ts3eYHD2bezPvm9+YJI5Xm9gPEgFfamKeu9j/utmJXROS0q/0lSxQxpV6clF33tTHt5UYdAJkCXJxPpa9dXSzf2JtImriyBq72M57WyWwi0QboeEPb/eW0lrvNR9WG82z84ljP7x6vXL9ULN/aDAKAtACIYIyxAZRS1P8E9mbv38Mq7ACIJcoVBEuEkEZ7EUFESKEyk6OpFmpJZfnFdLYUYIiW4PX7dLTvrjYaqe0OuHes8uDc/OJrMwsgCufTF94111kdpUKAE/aBHwuZPcxyICKYeJJ9WJMLIcBK06HqrM+wvwWo/O2GciHA+XyBcs6OLA6MIRCodVdY7XVUJGCtu8H7eg3fhFswGI7mbM7kCxgDeeJvIwGHsjkuLJRmOtCjv2njn4oE/HYHfP3ZIpgyYDCcPVggFYshamvqQ8xcJEAELhcPh6YggKd1aC5HJPVyvFbT9XYyZVzt42k9ieG2YoDvZnAzCuB967QkphQyenlnCErAm0JOt3D78ecPd5x+b81SKk2ERIT2huO/Md0n49x/OrW9e2ElT4QAAAAASUVORK5CYII=") ;
+}
+.rw-span:hover:after{
+  display: none;
 }
 /*.rw-span:before,
 .rw-span:after{
@@ -68,33 +71,33 @@
   right: 0;
   top: 0;
   bottom: 0;
-  border: 1px rgba(221, 20, 147, 0.5) solid;
+  border: 1px rgba(221,20,147,.5) solid;
   opacity: 0;
-  transition: all ease 0.2s;
+  transition: all ease .2s;
 }
-.rw-span:after {
+.rw-span:after{
   border-left: none;
   border-top: none;
-  transform: translate(5px, 5px);
+  transform: translate(5px ,5px);
 }
-.rw-span:before {
+.rw-span:before{
   border-right: none;
   border-bottom: none;
-  transform: translate(-5px, -5px);
+  transform: translate(-5px ,-5px);
 }
 .rw-span:hover:before,
-.rw-span:hover:after {
-  transform: translate(0, 0);
+.rw-span:hover:after{
+  transform: translate(0 ,0);
   opacity: 1;
 }*/
-#rw-word {
+#rw-word{
   color: #dd1493;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: capitalize;
 }
-#rw-remark {
+#rw-remark{
   color: #333;
   font-size: 14px;
   font-weight: 700;
