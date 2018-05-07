@@ -41,10 +41,19 @@ const WordCard = observer(props => {
           <form
             onSubmit={evt => {
               evt.preventDefault()
-              addOrOupdate(props.cardState.word, inputRef.value)
+              if (props.cardState.remark != inputRef.value) {
+                addOrOupdate(props.cardState.word, inputRef.value)
+              } else {
+                props.cardState.isEdit = false
+              }
             }}
           >
-            <input defaultValue={props.cardState.remark} ref={ele => (inputRef = ele)} autoFocus />
+            <input
+              defaultValue={props.cardState.remark}
+              ref={ele => (inputRef = ele)}
+              autoFocus
+              onKeyDown={evt => evt.keyCode == 27 && (props.cardState.isEdit = false)}
+            />
           </form>
         </div>
       ) : (
