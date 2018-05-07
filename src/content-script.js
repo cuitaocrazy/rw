@@ -83,6 +83,7 @@ const createBubble = words => {
   const remark = document.createElement('div')
   remark.setAttribute('id', 'rw-remark')
   const gtEl = document.createElement('div')
+  gtEl.setAttribute('id', 'rw-gtEl')
   bubble.appendChild(word)
   bubble.appendChild(remark)
   bubble.appendChild(gtEl)
