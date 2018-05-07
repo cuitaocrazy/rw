@@ -3,6 +3,8 @@ import { curry } from 'ramda'
 
 const tagSet = new Set(['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'B', 'SMALL', 'STRONG', 'Q', 'DIV', 'SPAN', 'LI'])
 
+let v = false
+
 const filter = node => tagSet.has(node.parentNode.tagName) && node.textContent.trim().length > 6
 /**
  *
@@ -50,14 +52,26 @@ function* transformTextNode(node, getWords) {
   }
 }
 
+const as = []
+const recover = () => {
+  as.forEach(f => f())
+  as.length = 0
+}
 const effectDom = keys => {
   const _getWords = getWords('\\b' + keys.join('\\b|\\b') + '\\b')
   for (const node of Array.from(getTextNodes(document.body))) {
-    const newNodes = transformTextNode(node, _getWords)
+    const newNodes = Array.from(transformTextNode(node, _getWords))
+    const pn = node.parentElement
     for (const nn of newNodes) {
-      node.parentElement.insertBefore(nn, node)
+      pn.insertBefore(nn, node)
     }
-    node.parentElement.removeChild(node)
+    pn.removeChild(node)
+    as.push(() => {
+      pn.insertBefore(node, newNodes[0])
+      for (const nn of newNodes) {
+        pn.removeChild(nn)
+      }
+    })
   }
 }
 
@@ -69,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
       return
     }
     effectDom(keys)
+    v = true
 
     createBubble(words)
   })
@@ -193,19 +208,28 @@ const createAddWordBubble = () => {
   })
 }
 
-// document.addEventListener('selectionchange', e => {
-//   const selection = window.getSelection()
-//   console.log(selection)
-//   console.log(selection.toString())
-//   // console.log(selection.focusNode.textContent.slice(selection.anchorOffset, selection.extentOffset))
-// })
-
-// const dts = '&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t'
 const dts = '&dt=bd'
 const gt = word =>
   new Promise((resolve, reject) =>
     chrome.runtime.sendMessage({ evtType: 'rw-tw', word, dts }, function(response) {
-      // console.log(response.data)
       resolve(response.data)
     })
   )
+
+chrome.runtime.onMessage.addListener((req, sender, sendResp) => {
+  if (req.evtType == 'rw-change') {
+    if (v) {
+      recover()
+      v = false
+    } else {
+      chget(words => {
+        const keys = Object.keys(words)
+        if (keys.length == 0) {
+          return
+        }
+        effectDom(keys)
+        v = true
+      })
+    }
+  }
+})
