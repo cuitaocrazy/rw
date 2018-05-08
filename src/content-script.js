@@ -23,7 +23,7 @@ const destroy = () => {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  chrome.storage.local.get(['defaultDisable'], result => !!result['defaultDisable'] && init())
+  chrome.storage.local.get(['defaultDisable'], result => !result['defaultDisable'] && init())
 })
 
 chrome.runtime.onMessage.addListener((req, sender, sendResp) => {
