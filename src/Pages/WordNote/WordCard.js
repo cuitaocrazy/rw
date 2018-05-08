@@ -6,7 +6,7 @@ import { gt } from '../../gt-api'
 export default class WordCard extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { editing: false, remark: props.remark }
+    this.state = { editing: false, remark: props.remark, gt: undefined, gtLoading: false }
     this.onSubmitHandle = evt => {
       if (this.props.remark != this.state.remark) {
         addOrOupdate(this.props.word, this.state.remark.trim())
@@ -17,7 +17,7 @@ export default class WordCard extends React.Component {
     this.onEditBtnClickHandle = () => this.setState({ editing: !this.state.editing })
     this.onKeyDownHandle = evt => evt.keyCode == 27 && this.setState({ editing: false, remark: props.remark })
     this.onChangeHandle = evt => this.setState({ remark: evt.target.value })
-    this.onGoogleBtnClickHandle = () => gt(props.word).then(data => this.setState({ gt: data }))
+    this.onGoogleBtnClickHandle = () => gt(props.word).then(data => this.setState({ gt: data, gtLoading: true }))
     this.onCardDelHandle = () => del(this.props.word)
   }
 
@@ -51,7 +51,13 @@ export default class WordCard extends React.Component {
         ) : (
           <div className={style['card-remark']}>{this.props.remark}</div>
         )}
-        {this.state.gt ? this.makeGoogleDisplayUI(this.state.gt) : <button onClick={this.onGoogleBtnClickHandle}>google</button>}
+        {this.state.gt ? (
+          this.makeGoogleDisplayUI(this.state.gt)
+        ) : (
+          <button disabled={this.state.gtLoading} onClick={this.onGoogleBtnClickHandle}>
+            google
+          </button>
+        )}
 
         <button className={style['card-del']} onClick={this.onCardDelHandle} />
       </li>
