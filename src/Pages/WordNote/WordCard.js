@@ -40,7 +40,10 @@ export default class WordCard extends React.Component {
   }
 
   /**
-   * @return {*}
+   *
+   * 渲染
+   *
+   * @return {*} DOM
    */
   render() {
     return (
