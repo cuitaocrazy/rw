@@ -22,7 +22,9 @@ const destroy = () => {
   v = false
 }
 
-document.addEventListener('DOMContentLoaded', init)
+document.addEventListener('DOMContentLoaded', () => {
+  chrome.storage.local.get(['defaultDisable'], result => !!result['defaultDisable'] && init())
+})
 
 chrome.runtime.onMessage.addListener((req, sender, sendResp) => {
   if (req.evtType == 'rw-change') {

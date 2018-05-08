@@ -26,6 +26,7 @@
     "object-curly-spacing": [2, "always"],
     "max-len": ["error", { "code": 160 }],
     "arrow-parens": ["error", "as-needed"],
-    "react/prop-types": 0
+    "react/prop-types": 0,
+    "require-jsdoc": 0
   }
 }
