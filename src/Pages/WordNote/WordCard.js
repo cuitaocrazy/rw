@@ -2,6 +2,7 @@ import React from 'react'
 import style from './wordnode.css'
 import { addOrOupdate, del } from '../../words-api'
 import { gt } from '../../gt-api'
+import GoogleTTS from './GoogleTTS'
 
 export default class WordCard extends React.Component {
   constructor(props) {
@@ -23,15 +24,18 @@ export default class WordCard extends React.Component {
 
   makeGoogleDisplayUI(data) {
     return (
-      <ul>
-        {data[1] &&
-          data[1].map(ex => (
-            <li key={ex[0]}>
-              {ex[0]}
-              <ul>{ex[1] && ex[1].map(w => <li key={w}>{w}</li>)}</ul>
-            </li>
-          ))}
-      </ul>
+      <React.Fragment>
+        <GoogleTTS word={this.props.word} />
+        <ul>
+          {data[1] &&
+            data[1].map(ex => (
+              <li key={ex[0]}>
+                {ex[0]}
+                <ul>{ex[1] && ex[1].map(w => <li key={w}>{w}</li>)}</ul>
+              </li>
+            ))}
+        </ul>
+      </React.Fragment>
     )
   }
 

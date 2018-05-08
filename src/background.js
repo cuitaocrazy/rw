@@ -10,7 +10,9 @@ function updateTkk() {
     .then(res => res.text())
     .then(txt => regex.exec(txt)[1])
     .then(js => eval(eval('"' + js + '"')))
-    .then(tkk => new Promise((resolve, reject) => chrome.storage.local.set({ tkk: tkk, timestamp: Math.floor(Date.now() / 3600000) }, () => resolve(tkk))))
+    .then(
+      tkk => new Promise((resolve, reject) => chrome.storage.local.set({ tkk: { key: tkk, timestamp: Math.floor(Date.now() / 3600000) } }, () => resolve(tkk)))
+    )
 }
 
 /**
@@ -27,8 +29,9 @@ function checkTkk() {
         const now = Math.floor(Date.now() / 3600000)
         if (result.tkk.timestamp != now) {
           up()
+        } else {
+          resolve(result.tkk.key)
         }
-        resolve(result.tkk)
       } else {
         up()
       }
