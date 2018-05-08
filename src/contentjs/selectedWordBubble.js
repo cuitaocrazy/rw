@@ -1,5 +1,6 @@
 import { effectDom } from './effectDom'
 import { chget, chset } from '../words-api'
+import { getWord } from './wordDict'
 const as = []
 
 export const clear = () => {
@@ -11,7 +12,7 @@ export const createBubble = () => {
   const container = document.createElement('div')
   container.setAttribute('id', 'rw-add-word-bubble')
   container.setAttribute('style', 'visibility: hidden')
-  const btn = document.createElement('div')
+  let btn = document.createElement('div')
   btn.setAttribute('id', 'rw-add-word-bubble-btn')
 
   container.appendChild(btn)
@@ -46,17 +47,20 @@ export const createBubble = () => {
           const loc = calcLoc()
           container.style.top = loc.top
           container.style.left = loc.left
-
+          const newBtn = btn.cloneNode(true)
+          btn.parentNode.replaceChild(newBtn, btn)
+          btn = newBtn
           btn.addEventListener(
             'click',
-            () => {
-              chget(words => {
-                words[selectedText.toLowerCase()] = selectedText
-                chset(words, () => {
-                  effectDom([selectedText])
+            () =>
+              getWord(selectedText.trim().toLowerCase()).then(word => {
+                chget(words => {
+                  words[word] = word
+                  chset(words, () => {
+                    effectDom([word])
+                  })
                 })
-              })
-            },
+              }),
             true
           )
         }

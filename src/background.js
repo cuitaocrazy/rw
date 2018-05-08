@@ -57,5 +57,16 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         })
       return true
     }
+  } else if (request.evtType == 'rw-dict') {
+    sendResponse({ word: dict.get(request.word) || request.word })
   }
 })
+
+let dict
+
+fetch(chrome.extension.getURL('eng_dict.txt'))
+  .then(res => res.text())
+  .then(s => s.split('\n'))
+  .then(as => as.map(line => line.split('\t')))
+  .then(as => new Map(as))
+  .then(map => (dict = map))
