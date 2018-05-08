@@ -25,6 +25,7 @@ const getWords = set => text =>
     while (match) {
       const w = await getWord(match[0].toLowerCase())
       if (set.has(w)) {
+        match.wk = w
         ret.push(match)
       }
       match = regWord.exec(text)
@@ -49,6 +50,7 @@ async function transformTextNode(node, getWords) {
     }
     const span = document.createElement('rw-span')
     span.setAttribute('class', 'rw-span')
+    span.setAttribute('rw-wk', match.wk)
     span.textContent = match[0]
     ret.push(span)
     beginIndex = match.index + match[0].length

@@ -24,7 +24,7 @@ export const createBubble = words => {
     const currentNode = document.elementFromPoint(evt.clientX, evt.clientY)
     if (currentNode && currentNode.tagName === 'RW-SPAN') {
       if (window.getComputedStyle(bubble).visibility === 'hidden') {
-        const key = currentNode.textContent.toLowerCase()
+        const key = currentNode.getAttribute('rw-wk')
         word.textContent = key
         remark.textContent = words[key]
         const rect = currentNode.getBoundingClientRect()
