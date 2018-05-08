@@ -1,34 +1,10 @@
 import React from 'react'
 import { observer } from 'mobx-react'
 import { observable } from 'mobx'
-import { addOrOupdate } from '../../words-api'
 import style from './wordnode.css'
 import { pick, keys, filter, chain, compose } from 'ramda'
 import WordCard from './WordCard'
-
-const AddWord = props => {
-  let wordInput
-  let remarkInput
-  return (
-    <form
-      className={style.form}
-      onSubmit={e => {
-        addOrOupdate(wordInput.value, remarkInput.value)
-        e.preventDefault()
-      }}
-    >
-      <div className={style['input-en']}>
-        <input type="text" ref={el => (wordInput = el)} placeholder=" " />
-        <span>English words</span>
-      </div>
-      <div className={style['input-ch']}>
-        <input type="text" ref={el => (remarkInput = el)} placeholder=" " />
-        <span>中文翻译</span>
-        <input className={style['create-card']} type="submit" value="添加" />
-      </div>
-    </form>
-  )
-}
+import AddWord from './AddWord'
 
 const Filter = observer(props => (
   <div className={style['filter-content']}>
