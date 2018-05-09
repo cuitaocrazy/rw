@@ -61,13 +61,18 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       return true
     }
   } else if (request.evtType == 'rw-dict') {
-    sendResponse({ word: dict.get(request.word) || request.word })
+    if (dict != undefined) {
+      sendResponse({ word: dict.get(request.word) || request.word })
+    } else {
+      p.then(() => sendResponse({ word: dict.get(request.word) || request.word }))
+      return true
+    }
   }
 })
 
 let dict
 
-fetch(chrome.extension.getURL('eng_dict.txt'))
+const p = fetch(chrome.extension.getURL('eng_dict.txt'))
   .then(res => res.text())
   .then(s => s.split('\n'))
   .then(as => as.map(line => line.split('\t')))
