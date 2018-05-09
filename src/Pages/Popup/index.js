@@ -1,7 +1,7 @@
 import React from 'react'
 // import { observable } from 'mobx'
 // import { observer } from 'mobx-react'
-import style from '../WordNote/wordnode.css'
+import style from './popup.css'
 import RwSwitch from './RwSwitch'
 
 const createTab = htmlfile => chrome.tabs.create({ url: chrome.extension.getURL(htmlfile) }, () => {})

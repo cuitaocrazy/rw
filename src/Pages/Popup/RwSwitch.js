@@ -1,5 +1,5 @@
 import React from 'react'
-import style from '../WordNote/wordnode.css'
+import style from './popup.css'
 
 const currentTab = new Promise((resolve, reject) =>
   chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
