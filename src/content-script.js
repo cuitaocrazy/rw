@@ -43,7 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 chrome.runtime.onMessage.addListener((req, sender, sendResp) => {
   if (req.evtType == 'rw-change-status') {
-    rwSwitch().then(() => sendResp('ok'))
+    rwSwitch()
+      .then(() => sendResp('ok'))
+      .catch(() => {})
     return true
   } else if (req.evtType == 'tw-get-status') {
     sendResp({ disable: v })
