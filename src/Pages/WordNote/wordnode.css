@@ -25,7 +25,7 @@
 .card-word {
   /*color: orangered;*/
   display: inline-block;
-  color: orangered;
+  color: rgb(253,64,138);
   font-size: 18px;
   font-weight: 500;
   letter-spacing: 1px;
@@ -62,13 +62,13 @@
   right: -6px;
   width: 16px;
   height: 16px;
-  background-color: coral;
+  background-color: rgb(255,115,165);
   border-radius: 16px;
-  box-shadow: rgba(0, 0, 0, 0.2) -2px 2px 1px;
-  transition: background ease 0.2s;
+  box-shadow: rgba(0,0,0,.2) -2px 2px 1px;
+  transition: background ease .2s;
 }
-.card-del:hover {
-  background-color: orangered;
+.card:hover .card-del{
+  background-color: rgb(253,64,138);
 }
 .card-del:after,
 .card-del:before {
@@ -97,7 +97,7 @@
   width: 300px;
   font-size: 14px;
   text-indent: 24px;
-  border: coral 1px solid;
+  border: rgb(255,115,165) 1px solid;
   border-radius: 5px;
   box-sizing: border-box;
   outline: none;
@@ -105,7 +105,7 @@
 }
 .filter-control:focus {
   text-indent: 14px;
-  border: orangered 1px solid;
+  border: rgb(253,64,138) 1px solid;
 }
 .filter-control:focus::placeholder {
   color: transparent;
@@ -200,4 +200,141 @@
     transform: translateX(0) translateY(-30px);
     opacity: 1;
   }
+}
+
+.switch-bar{
+  position: relative;
+  overflow: hidden;
+  margin: 10px auto;
+  width: 50px;
+  height: 40px;
+  border-radius: 50px;
+  background-color: #ddd;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+.label-switch{
+  position: absolute;
+  z-index: 1;
+  display: block;
+  top: 2px;
+  left: 2px;
+  width: 46px;
+  height: 36px;
+  border-radius: 50px;
+  background-size: cover;
+  background-image: radial-gradient(circle, rgb(0,191,255), rgb(0,155,255));
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: all .5s ease;
+}
+.label-switch:after,
+.label-switch:before{
+  position: absolute;
+  display: block;
+  content: 'ON';
+  width: 46px;
+  height: 36px;
+  color: #fff;
+  text-align: center;
+  line-height: 36px;
+  opacity: .8;
+  transform: scale(1);
+  transform-origin: center center;
+  transition: all .5s ease;
+}
+.label-switch:after{
+  content: 'OFF';
+  opacity: 0;
+  transform: scale(.2);
+  animation: bling ease-in-out 2s infinite alternate;
+}
+@keyframes bling {
+  0%,20%,35%,45%,56%,66%,75%,90%,100%{
+    font-weight: 700;
+    color: rgba(255,255,255,.5);
+  }
+  25%,30%,50%,52%,60%,62%,80%,85%{
+    color: rgba(0,191,255,.5);
+  }
+}
+.btn-switch{
+  opacity: 0;
+}
+.btn-switch[type='checkbox']:checked + .label-switch{
+  background-color: rgba(0,191,255,.3);
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAXklEQVRYhe3SsQ0AIAwDwSRjsP+eoURBdBR28e4+dOgizlbMWXQ+Hmxn8WN3V3ePq1tXZo6DXQcG/xqDGFQ3BjGobgxiUN0YxKC6MYhBdWMQg+rGIAbVjUEMqtve4AakUzhSOO1pBgAAAABJRU5ErkJggg==");
+}
+.btn-switch[type='checkbox']:checked + .label-switch:after{
+  opacity: .8;
+  transform: scale(1);
+}
+.btn-switch[type='checkbox']:checked + .label-switch:before{
+  opacity: 0;
+  transform: scale(.2);
+}
+.note-btn{
+  padding: 5px;
+  width: 40px;
+  height: 60px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px #757575 solid;
+  border-left-color: #999;
+  border-right-color: #666;
+  border-radius: 6px 3px 3px 6px;
+  background: rgba(255,115,165,1);
+  box-sizing: content-box;
+  box-shadow: rgba(0, 0, 0, 0.25) 2px 2px 2px 0;
+  cursor: pointer;
+}
+.note-title:first-child{
+  font-size: 10px;
+  font-weight: 500;
+  transform: translateY(-5px);
+}
+.note-title{
+  display: block;
+}
+.check-title{
+  position: relative;
+  left: -6px;
+  width: 100%;
+  cursor: pointer;
+}
+.check-title:after,
+.check-title:before {
+  position: absolute;
+  top: 1px;
+  right: -16px;
+  display: inline-block;
+  content: '';
+}
+.check-title:before{
+  width: 12px;
+  height: 12px;
+  border: 1px rgba(255,115,165,.6) solid;
+  background-color: rgba(255,255,255,.8);
+  transition: all ease .2s;
+}
+.check-title:after{
+  width: 12px;
+  height: 6px;
+  border-left: 2px rgb(255,64,138) solid;
+  border-bottom: 2px rgb(255,64,138) solid;
+  opacity: 0;
+  transform: rotate(-54deg) translate(2px, 7px) scale(.1);
+  transform-origin: left bottom;
+  transition: all cubic-bezier(0,1.8,.5,1.8) .2s;
+}
+.check-box{
+  display: none;
+}
+.check-box[type='checkbox']:checked + .check-title:after{
+  opacity: 1;
+  transform: rotate(-54deg) translate(3px, 8px) scale(1);
+}
+.check-box[type='checkbox']:checked + .check-title:before{
+  border: 1px rgba(255,115,165,1) solid;
+  background-color: rgba(255,255,255,.1);
 }

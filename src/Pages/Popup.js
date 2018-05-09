@@ -1,6 +1,7 @@
 import React from 'react'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react'
+import style from './WordNote/wordnode.css'
 
 const createTab = htmlfile => chrome.tabs.create({ url: chrome.extension.getURL(htmlfile) }, () => {})
 
@@ -18,15 +19,15 @@ const chromeTab = observable({
 })
 
 const RwSwitch = observer(props => (
-  <div>
-    <button
+  <div className={style['switch-bar']}>
+    <input type="checkbox" id='switch'
+      className={style['btn-switch']}
       onClick={evt => {
         chrome.tabs.sendMessage(props.chromeTab.tab.id, { evtType: 'rw-change' }, () => {})
       }}
       disabled={!props.chromeTab.tab}
-    >
-      启用/禁用
-    </button>
+    />
+    <label  className={style['label-switch']} htmlFor="switch"> </label>
   </div>
 ))
 
@@ -46,20 +47,22 @@ class RwSetting extends React.Component {
 
   render() {
     return (
-      <div>
-        <label>
-          默认开启:
-          <input type="checkbox" disabled={!this.state.canEdit} checked={this.state.defaultEnable} onChange={evt => this.setSettings(evt.target.checked)} />
-        </label>
+      <div className={style['check-bar']}>
+        <input id="rw-checkbox" className={style['check-box']} type="checkbox"
+           disabled={!this.state.canEdit} checked={this.state.defaultEnable}
+           onChange={evt => this.setSettings(evt.target.checked)}
+        />
+        <label htmlFor="rw-checkbox" className={style['check-title']}>默认开启:</label>
       </div>
     )
   }
 }
 export default () => (
-  <div>
-    <div>
-      <button onClick={() => createTab('word-note.html')}>单词本</button>
-    </div>
+  <div className={style['btn-bar']}>
+    <button className={style['note-btn']} onClick={() => createTab('word-note.html')}>
+      <span className={style['note-title']}>English</span>
+      <span className={style['note-title']}>我的</span>单词本
+    </button>
     <RwSwitch chromeTab={chromeTab} />
     <RwSetting />
   </div>
