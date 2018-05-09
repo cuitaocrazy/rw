@@ -1,40 +1,8 @@
 import React from 'react'
-// import { observable } from 'mobx'
-// import { observer } from 'mobx-react'
 import style from './popup.css'
 import RwSwitch from './RwSwitch'
 
 const createTab = htmlfile => chrome.tabs.create({ url: chrome.extension.getURL(htmlfile) }, () => {})
-
-// chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-//   if (tabs.length > 0) {
-//     const currentTab = tabs[0]
-//     if (currentTab.url.startsWith('http:') || currentTab.url.startsWith('https:') || currentTab.url.startsWith('file:')) {
-//       chromeTab.tab = currentTab
-//     }
-//   }
-// })
-
-// const chromeTab = observable({
-//   tab: undefined,
-// })
-
-// const RwSwitch = observer(props => (
-//   <div className={style['switch-bar']}>
-//     <input
-//       type="checkbox"
-//       id="switch"
-//       className={style['btn-switch']}
-//       onClick={evt => {
-//         chrome.tabs.sendMessage(props.chromeTab.tab.id, { evtType: 'rw-change-status' }, () => {})
-//       }}
-//       disabled={!props.chromeTab.tab}
-//     />
-//     <label className={style['label-switch']} htmlFor="switch">
-//       {' '}
-//     </label>
-//   </div>
-// ))
 
 class RwSetting extends React.Component {
   constructor() {
