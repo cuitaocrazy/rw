@@ -37,9 +37,9 @@ getTkk()
 const makeUrl = (word, tk, dts) => 'https://translate.google.cn/translate_a/single?client=t&sl=en&tl=zh-CN&hl=zh-CN' + dts + tk + '&q=' + word
 
 const cache = {}
-const p = fetch(chrome.extension.getURL('eng_dict.dat'))
+const p = fetch(chrome.extension.getURL('eng_dict.txt'))
   .then(res => res.text())
-  .then(s => s.split('\n'))
+  .then(s => (s.indexOf('\r') === -1 ? s.split('\n') : s.split('\r\n')))
   .then(as => as.map(line => line.split('\t')))
   .then(as => new Map(as))
 
