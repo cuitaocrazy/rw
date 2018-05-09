@@ -20,14 +20,18 @@ const chromeTab = observable({
 
 const RwSwitch = observer(props => (
   <div className={style['switch-bar']}>
-    <input type="checkbox" id='switch'
+    <input
+      type="checkbox"
+      id="switch"
       className={style['btn-switch']}
       onClick={evt => {
         chrome.tabs.sendMessage(props.chromeTab.tab.id, { evtType: 'rw-change-status' }, () => {})
       }}
       disabled={!props.chromeTab.tab}
     />
-    <label  className={style['label-switch']} htmlFor="switch"> </label>
+    <label className={style['label-switch']} htmlFor="switch">
+      {' '}
+    </label>
   </div>
 ))
 
@@ -48,11 +52,17 @@ class RwSetting extends React.Component {
   render() {
     return (
       <div className={style['check-bar']}>
-        <input id="rw-checkbox" className={style['check-box']} type="checkbox"
-           disabled={!this.state.canEdit} checked={this.state.defaultEnable}
-           onChange={evt => this.setSettings(evt.target.checked)}
+        <input
+          id="rw-checkbox"
+          className={style['check-box']}
+          type="checkbox"
+          disabled={!this.state.canEdit}
+          checked={this.state.defaultEnable}
+          onChange={evt => this.setSettings(evt.target.checked)}
         />
-        <label htmlFor="rw-checkbox" className={style['check-title']}>默认开启:</label>
+        <label htmlFor="rw-checkbox" className={style['check-title']}>
+          默认开启:
+        </label>
       </div>
     )
   }
