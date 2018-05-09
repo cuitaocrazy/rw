@@ -21,7 +21,7 @@ const RwSwitch = observer(props => (
   <div>
     <button
       onClick={evt => {
-        chrome.tabs.sendMessage(props.chromeTab.tab.id, { evtType: 'rw-change' }, () => {})
+        chrome.tabs.sendMessage(props.chromeTab.tab.id, { evtType: 'rw-change-status' }, () => {})
       }}
       disabled={!props.chromeTab.tab}
     >

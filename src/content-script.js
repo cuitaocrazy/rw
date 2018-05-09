@@ -27,11 +27,13 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 chrome.runtime.onMessage.addListener((req, sender, sendResp) => {
-  if (req.evtType == 'rw-change') {
+  if (req.evtType == 'rw-change-status') {
     if (v) {
       destroy()
     } else {
       init()
     }
+  } else if (req.evtType == 'tw-get-status') {
+    sendResp({ disable: v })
   }
 })
