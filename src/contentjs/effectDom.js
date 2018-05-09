@@ -67,22 +67,21 @@ export const recover = () => {
   as.forEach(f => f())
   as.length = 0
 }
-export const effectDom = keys => {
+export const effectDom = async keys => {
   if (keys.length == 0) return
   const _getWords = getWords(new Set(keys))
   for (const node of getTextNodes(document.body)) {
-    transformTextNode(node, _getWords).then(newNodes => {
-      const pn = node.parentElement
+    const newNodes = await transformTextNode(node, _getWords)
+    const pn = node.parentElement
+    for (const nn of newNodes) {
+      pn.insertBefore(nn, node)
+    }
+    pn.removeChild(node)
+    as.push(() => {
+      pn.insertBefore(node, newNodes[0])
       for (const nn of newNodes) {
-        pn.insertBefore(nn, node)
+        pn.removeChild(nn)
       }
-      pn.removeChild(node)
-      as.push(() => {
-        pn.insertBefore(node, newNodes[0])
-        for (const nn of newNodes) {
-          pn.removeChild(nn)
-        }
-      })
     })
   }
 }

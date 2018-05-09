@@ -26,7 +26,10 @@ export default class RwSwitch extends React.Component {
     this.state = { extEnable: false, loaded: false }
     let sendStatus
     getCurrentTabStatus().then(status => {
-      sendStatus = () => chrome.tabs.sendMessage(status.id, { evtType: 'rw-change-status' }, () => {})
+      sendStatus = () => {
+        this.setState({ loaded: false })
+        chrome.tabs.sendMessage(status.id, { evtType: 'rw-change-status' }, () => this.setState({ loaded: true }))
+      }
       this.setState({ extEnable: !status.disable, loaded: true })
     })
     this.onCheckboxClick = () => {
