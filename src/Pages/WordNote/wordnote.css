@@ -34,8 +34,10 @@
 }
 .card-remark {
   margin-top: 5px;
+  margin-bottom: 5px;
   color: #333;
   font-size: 18px;
+  line-height: 24px;
 }
 .card-edit,
 .card-del {
@@ -201,4 +203,16 @@
     transform: translateX(0) translateY(-30px);
     opacity: 1;
   }
+}
+.rw-form {
+  display: block;
+  margin: 0;
+}
+.rw-form .card-remark {
+  display: inline-block;
+  width: auto !important;
+  line-height: 24px;
+  border: none;
+  outline: none;
+  background-color: rgba(255, 115, 165, 0.5);
 }

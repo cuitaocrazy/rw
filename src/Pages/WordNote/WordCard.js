@@ -1,5 +1,5 @@
 import React from 'react'
-import style from './wordnode.css'
+import style from './wordnote.css'
 import { addOrOupdate, del } from '../../words-api'
 import { gt } from '../../gt-api'
 import GoogleTTS from './GoogleTTS'
@@ -47,11 +47,9 @@ export default class WordCard extends React.Component {
           <img src="./images/edit.png" />
         </button>
         {this.state.editing ? (
-          <div>
-            <form onSubmit={this.onSubmitHandle}>
-              <input value={this.state.remark} autoFocus onKeyDown={this.onKeyDownHandle} onChange={this.onChangeHandle} />
-            </form>
-          </div>
+          <form className={style['rw-form']} onSubmit={this.onSubmitHandle}>
+            <input className={style['card-remark']} value={this.state.remark} autoFocus onKeyDown={this.onKeyDownHandle} onChange={this.onChangeHandle} />
+          </form>
         ) : (
           <div className={style['card-remark']}>{this.props.remark}</div>
         )}

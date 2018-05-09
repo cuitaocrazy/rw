@@ -1,5 +1,6 @@
 import React from 'react'
 const tk = require('../../tk')
+import style from './wordnote.css'
 
 let tkk
 chrome.storage.local.get(['tkk'], result => {
@@ -19,9 +20,9 @@ export default class GoogleTTS extends React.Component {
   render() {
     return (
       <div>
-        <button disabled={this.state.playing} onClick={this.onClickHandle}>
-          播放
-        </button>
+        <span className={style.audio} disabled={this.state.playing} onClick={this.onClickHandle}>
+          {/* 播放 */}
+        </span>
         {this.state.playing && <audio autoPlay="true" src={this.state.url} onEnded={this.onEndedHandle} />}
       </div>
     )

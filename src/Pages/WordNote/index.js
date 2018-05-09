@@ -1,7 +1,7 @@
 import React from 'react'
 import { observer } from 'mobx-react'
 import { observable } from 'mobx'
-import style from './wordnode.css'
+import style from './wordnote.css'
 import { pick, keys, filter, chain, compose } from 'ramda'
 import WordCard from './WordCard'
 import AddWord from './AddWord'

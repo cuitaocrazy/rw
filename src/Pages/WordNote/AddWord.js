@@ -1,6 +1,6 @@
 import React from 'react'
 import { addOrOupdate } from '../../words-api'
-import style from './wordnode.css'
+import style from './wordnote.css'
 
 export default class AddWord extends React.Component {
   constructor() {
