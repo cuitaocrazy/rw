@@ -37,6 +37,12 @@ getTkk()
 const makeUrl = (word, tk, dts) => 'https://translate.google.cn/translate_a/single?client=t&sl=en&tl=zh-CN&hl=zh-CN' + dts + tk + '&q=' + word
 
 const cache = {}
+const p = fetch(chrome.extension.getURL('eng_dict.txt'))
+  .then(res => res.text())
+  .then(s => s.split('\n'))
+  .then(as => as.map(line => line.split('\t')))
+  .then(as => new Map(as))
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.evtType == 'rw-tw') {
     if (cache[request.word]) {
@@ -54,20 +60,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       return true
     }
   } else if (request.evtType == 'rw-dict') {
-    if (dict != undefined) {
-      sendResponse({ word: dict.get(request.word) || request.word })
-    } else {
-      p.then(() => sendResponse({ word: dict.get(request.word) || request.word }))
-      return true
-    }
+    p.then(dict => sendResponse({ word: dict.get(request.word) || request.word }))
+    return true
   }
 })
-
-let dict
-
-const p = fetch(chrome.extension.getURL('eng_dict.txt'))
-  .then(res => res.text())
-  .then(s => s.split('\n'))
-  .then(as => as.map(line => line.split('\t')))
-  .then(as => new Map(as))
-  .then(map => (dict = map))
