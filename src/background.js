@@ -17,7 +17,7 @@ function atomPromiseFunc(fn) {
 }
 
 async function _getTkk() {
-  const tkk = await chget(['tkk'])
+  const tkk = (await chget(['tkk'])).tkk
   if (tkk && tkk.timestamp == Math.floor(Date.now() / 3600000)) {
     return tkk.key
   } else {
