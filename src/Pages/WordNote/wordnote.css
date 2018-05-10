@@ -35,9 +35,10 @@
 .card-remark {
   margin-top: 5px;
   margin-bottom: 5px;
-  color: #333;
-  font-size: 18px;
+  color: #666;
+  font-size: 16px;
   line-height: 24px;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
 }
 .card-edit,
 .card-del {
@@ -107,7 +108,7 @@
   transition: all ease 0.2s;
 }
 .filter-control:focus {
-  text-indent: 14px;
+  text-indent: 9px;
   border: rgb(253, 64, 138) 1px solid;
 }
 .filter-control:focus::placeholder {
@@ -211,8 +212,51 @@
 .rw-form .card-remark {
   display: inline-block;
   width: auto !important;
+  color: rgb(255, 115, 165);
   line-height: 24px;
   border: none;
   outline: none;
-  background-color: rgba(255, 115, 165, 0.5);
+  background-color: rgba(255, 115, 165, 0.2);
+}
+.btn-icon {
+  padding: 0;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+.audio-bar {
+  display: inline-block;
+}
+.btn-icon,
+.audio-bar {
+  position: relative;
+  left: 15px;
+  top: 3px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+.btn-icon img,
+.audio-bar img {
+  width: 100%;
+}
+.rw-ul {
+  margin: 5px 0 0 20px;
+  padding: 0;
+  font-size: 14px;
+}
+.rw-ul > li {
+  margin-top: 2px;
+  color: rgba(255, 115, 165, 0.8);
+  list-style: square;
+}
+.rw-ul .rw-ul {
+  display: block;
+  margin: 1px 0 0;
+}
+.rw-ul .rw-ul > li {
+  display: inline-block;
+  margin: 0 10px 0 0;
+  color: #666;
+  list-style: none;
 }

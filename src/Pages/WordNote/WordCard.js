@@ -26,12 +26,12 @@ export default class WordCard extends React.Component {
     return (
       <React.Fragment>
         <GoogleTTS word={this.props.word} />
-        <ul>
+        <ul className={style['rw-ul']}>
           {data[1] &&
             data[1].map(ex => (
               <li key={ex[0]}>
                 {ex[0]}
-                <ul>{ex[1] && ex[1].map(w => <li key={w}>{w}</li>)}</ul>
+                <ul className={style['rw-ul']}>{ex[1] && ex[1].map(w => <li key={w}>{w}</li>)}</ul>
               </li>
             ))}
         </ul>
@@ -44,21 +44,21 @@ export default class WordCard extends React.Component {
       <li className={style.card}>
         <div className={style['card-word']}>{this.props.word}</div>
         <button className={style['card-edit']} onClick={this.onEditBtnClickHandle}>
-          <img src="./images/edit.png" />
+          <img src="./images/edit.png" title="编辑中文" />
         </button>
+        {this.state.gt ? (
+          this.makeGoogleDisplayUI(this.state.gt)
+        ) : (
+          <button className={style['btn-icon']} disabled={this.state.gtLoading} onClick={this.onGoogleBtnClickHandle}>
+            <img src="./images/google.png" title="谷歌翻译" />
+          </button>
+        )}
         {this.state.editing ? (
           <form className={style['rw-form']} onSubmit={this.onSubmitHandle}>
             <input className={style['card-remark']} value={this.state.remark} autoFocus onKeyDown={this.onKeyDownHandle} onChange={this.onChangeHandle} />
           </form>
         ) : (
           <div className={style['card-remark']}>{this.props.remark}</div>
-        )}
-        {this.state.gt ? (
-          this.makeGoogleDisplayUI(this.state.gt)
-        ) : (
-          <button disabled={this.state.gtLoading} onClick={this.onGoogleBtnClickHandle}>
-            google
-          </button>
         )}
 
         <button className={style['card-del']} onClick={this.onCardDelHandle} />

@@ -19,9 +19,9 @@ export default class GoogleTTS extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className={style['audio-bar']}>
         <span className={style.audio} disabled={this.state.playing} onClick={this.onClickHandle}>
-          {/* 播放 */}
+          <img src="./images/audio.png" alt="读" title="英文发音" />
         </span>
         {this.state.playing && <audio autoPlay="true" src={this.state.url} onEnded={this.onEndedHandle} />}
       </div>
