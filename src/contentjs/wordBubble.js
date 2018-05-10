@@ -39,6 +39,7 @@ export const createBubble = words => {
               return
             }
             const root = document.createElement('ul')
+            root.classList.add('rw-ul')
             explanations.forEach(exp => {
               const li = document.createElement('li')
               li.textContent = exp[0]

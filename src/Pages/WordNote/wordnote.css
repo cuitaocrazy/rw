@@ -257,6 +257,9 @@
 .rw-ul .rw-ul > li {
   display: inline-block;
   margin: 0 10px 0 0;
-  color: #666;
+  color: #666 !important;
   list-style: none;
+}
+.rw-ul > li:nth-child(even) {
+  color: rgba(115, 192, 255, 0.8);
 }
