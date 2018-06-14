@@ -1,10 +1,11 @@
-import { gt } from '../gt-api'
+import { translateWord } from '../msgs/background-call'
 
 const as = []
 export const clear = () => {
   as.forEach(f => f())
   as.length = 0
 }
+
 export const createBubble = words => {
   const bubble = document.createElement('div')
   bubble.setAttribute('id', 'rw-bubble')
@@ -20,8 +21,11 @@ export const createBubble = words => {
   bubble.appendChild(gtEl)
   document.body.appendChild(bubble)
 
+  const isBubble = el => (el ? el.id === 'rw-bubble' || isBubble(el.parentElement) : false)
+
   const mousemoveHandle = evt => {
     const currentNode = document.elementFromPoint(evt.clientX, evt.clientY)
+    currentNode.parentElement
     if (currentNode && currentNode.tagName === 'RW-SPAN') {
       if (window.getComputedStyle(bubble).visibility === 'hidden') {
         const key = currentNode.getAttribute('rw-wk')
@@ -32,7 +36,7 @@ export const createBubble = words => {
         bubble.style.left = Math.max(5, Math.floor(rect.left)) + 'px'
         bubble.classList.add('rw-show')
         gtEl.textContent = ''
-        gt(key).then(data => {
+        translateWord(key).then(data => {
           if (window.getComputedStyle(bubble).visibility !== 'hidden') {
             const explanations = data[1]
             if (!explanations) {
@@ -52,12 +56,11 @@ export const createBubble = words => {
                 ul.appendChild(twLi)
               })
             })
-            // gtEl.textContent = JSON.stringify(data)
             gtEl.appendChild(root)
           }
         })
       }
-    } else {
+    } else if (!isBubble(currentNode)) {
       bubble.classList.remove('rw-show')
     }
   }

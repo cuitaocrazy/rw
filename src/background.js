@@ -1,4 +1,5 @@
-const tk = require('./tk')
+const mtk = require('./tk')
+const { TRANSLATE_WORD, GET_TTS_URL, CONVERT_TO_BASE_WORD } = require('./msgs/background-evt-type')
 
 const regex = /TKK=eval\(\'(.*?)\'\)/ // eslint-disable-line
 
@@ -34,7 +35,7 @@ const getTkk = atomPromiseFunc(_getTkk)
 
 getTkk()
 
-const makeUrl = (word, tk, dts) => 'https://translate.google.cn/translate_a/single?client=t&sl=en&tl=zh-CN&hl=zh-CN' + dts + tk + '&q=' + word
+const makeGtUrl = (word, tk, dts) => 'https://translate.google.cn/translate_a/single?client=t&sl=en&tl=zh-CN&hl=zh-CN' + dts + tk + '&q=' + word
 
 const cache = {}
 const p = fetch(chrome.extension.getURL('eng_dict.txt'))
@@ -43,14 +44,17 @@ const p = fetch(chrome.extension.getURL('eng_dict.txt'))
   .then(as => as.map(line => line.split('\t')))
   .then(as => new Map(as))
 
+const makeGttsUrl = (word, tk) =>
+  'https://translate.google.cn/translate_tts?ie=UTF-8&q=' + word + '&tl=en&total=1&idx=0&textlen=' + word.length + tk + '&client=t&prev=input'
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request.evtType == 'rw-tw') {
+  if (request.evtType == TRANSLATE_WORD) {
     if (cache[request.word]) {
       sendResponse({ data: cache[request.word] })
     } else {
       getTkk()
         .then(tkk => {
-          const url = makeUrl(request.word, tk(request.word, tkk), request.dts)
+          const url = makeGtUrl(request.word, mtk(request.word, tkk), request.dts)
           return fetch(url).then(res => res.json())
         })
         .then(json => {
@@ -59,8 +63,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         })
       return true
     }
-  } else if (request.evtType == 'rw-dict') {
+  } else if (request.evtType == CONVERT_TO_BASE_WORD) {
     p.then(dict => sendResponse({ word: dict.get(request.word) || request.word }))
+    return true
+  } else if (request.evtType == GET_TTS_URL) {
+    getTkk().then(tkk => sendResponse({ url: makeGttsUrl(request.word, mtk(request.word, tkk)) }))
     return true
   }
 })

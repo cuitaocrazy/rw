@@ -2,6 +2,9 @@ import React from 'react'
 import { addOrOupdate } from '../../words-api'
 import style from './wordnote.css'
 
+/**
+ * 添加单词组件
+ */
 export default class AddWord extends React.Component {
   constructor() {
     super()

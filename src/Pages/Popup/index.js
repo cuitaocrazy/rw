@@ -2,8 +2,16 @@ import React from 'react'
 import style from './popup.css'
 import RwSwitch from './RwSwitch'
 
+/**
+ * 为单词本创建一个Tab
+ * @param {string} htmlfile 单词本的html文件相对路径
+ * @return {void}
+ */
 const createTab = htmlfile => chrome.tabs.create({ url: chrome.extension.getURL(htmlfile) }, () => {})
 
+/**
+ * 单词本配置组件
+ */
 class RwSetting extends React.Component {
   constructor() {
     super()

@@ -1,11 +1,14 @@
 import React from 'react'
 import style from './wordnote.css'
 import { addOrOupdate, del } from '../../words-api'
-import { gt } from '../../gt-api'
+import { translateWord } from '../../msgs/background-call'
 import GoogleTTS from './GoogleTTS'
 
+/**
+ * 单词卡组件
+ */
 export default class WordCard extends React.Component {
-  constructor(props) {
+  constructor(/** @type {{word: string, remark: string}} */ props) {
     super(props)
     this.state = { editing: false, remark: props.remark, gt: undefined, gtLoading: false }
     this.onSubmitHandle = evt => {
@@ -18,10 +21,15 @@ export default class WordCard extends React.Component {
     this.onEditBtnClickHandle = () => this.setState({ editing: !this.state.editing })
     this.onKeyDownHandle = evt => evt.keyCode == 27 && this.setState({ editing: false, remark: props.remark })
     this.onChangeHandle = evt => this.setState({ remark: evt.target.value })
-    this.onGoogleBtnClickHandle = () => gt(props.word).then(data => this.setState({ gt: data, gtLoading: true }))
+    this.onGoogleBtnClickHandle = () => translateWord(props.word).then(data => this.setState({ gt: data, gtLoading: true }))
     this.onCardDelHandle = () => del(this.props.word)
   }
 
+  /**
+   *
+   * @param {any[]} data
+   * @return {JSX.Element} Google翻译显示UI
+   */
   makeGoogleDisplayUI(data) {
     return (
       <React.Fragment>
@@ -39,6 +47,11 @@ export default class WordCard extends React.Component {
     )
   }
 
+  /**
+   * 渲染函数
+   *
+   * @return {JSX.Element}
+   */
   render() {
     return (
       <li className={style.card}>

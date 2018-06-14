@@ -1,40 +1,37 @@
 import React from 'react'
 import style from './popup.css'
+import { GET_TAB_STATUS, ENABLE_TAB_RW, DISABLE_TAB_RW } from '../../msgs/background-evt-type'
+import { tabQuery, sendMessageToTab } from '../../msgs/background-call'
 
-const currentTab = new Promise((resolve, reject) =>
-  chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-    if (tabs.length > 0) {
-      const currentTab = tabs[0]
-      if (currentTab.url.startsWith('http:') || currentTab.url.startsWith('https:') || currentTab.url.startsWith('file:')) {
-        resolve(currentTab)
-        return
-      }
-    }
-    resolve()
-  })
+/**
+ * 当前的Tab
+ */
+const currentTab = tabQuery({ active: true, currentWindow: true }).then(
+  tabs => (tabs.length && (tabs[0].url.startsWith('http:') || tabs[0].url.startsWith('https:') || tabs[0].url.startsWith('file:')) ? tabs[0] : null)
 )
-const getStatus = id =>
-  new Promise((resolve, reject) => chrome.tabs.sendMessage(id, { evtType: 'tw-get-status' }, status => resolve({ id, disable: status.disable })))
 
-async function getCurrentTabStatus() {
-  return await getStatus((await currentTab).id)
+/**
+ * 获取当前TAB单词本的启用状态
+ * @return {Promise<boolean?>}
+ */
+const getTabStatus = async () => {
+  const tab = await currentTab
+  return tab && (await sendMessageToTab(tab.id, { evtType: GET_TAB_STATUS }))
 }
 
+/**
+ * TAB启用单词本控制器组件
+ */
 export default class RwSwitch extends React.Component {
   constructor() {
     super()
     this.state = { extEnable: false, loaded: false }
-    let sendStatus
-    getCurrentTabStatus().then(status => {
-      sendStatus = () => {
-        this.setState({ loaded: false })
-        chrome.tabs.sendMessage(status.id, { evtType: 'rw-change-status' }, () => this.setState({ loaded: true }))
-      }
-      this.setState({ extEnable: !status.disable, loaded: true })
-    })
+    getTabStatus().then(disabled => disabled == null || this.setState({ extEnable: !disabled, loaded: true }))
     this.onCheckboxClick = () => {
-      sendStatus()
-      this.setState({ extEnable: !this.state.extEnable })
+      const enableFlag = this.state.extEnable
+      this.setState({ loaded: false, extEnable: !this.state.extEnable })
+      const msg = !enableFlag ? { evtType: ENABLE_TAB_RW } : { evtType: DISABLE_TAB_RW }
+      currentTab.then(tab => tab && sendMessageToTab(tab.id, msg)).then(() => this.setState({ loaded: true }))
     }
   }
 
