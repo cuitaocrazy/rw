@@ -1,5 +1,4 @@
-import { effectDom } from './effectDom'
-import { chget, chset } from '../words-api'
+import { getWords, setWords } from '../words-api'
 import { convertToBaseWord } from '../msgs/background-call'
 const as = []
 
@@ -52,15 +51,14 @@ export const createBubble = () => {
           btn = newBtn
           btn.addEventListener(
             'click',
-            () =>
-              convertToBaseWord(selectedText.trim().toLowerCase()).then(word => {
-                chget(words => {
-                  words[word] = word
-                  chset(words, () => {
-                    effectDom([word])
-                  })
-                })
-              }),
+            async () => {
+              const word = await convertToBaseWord(selectedText.trim().toLowerCase())
+              const words = await getWords()
+              if (!(word in words)) {
+                words[word] = word
+                await setWords(words)
+              }
+            },
             true
           )
         }

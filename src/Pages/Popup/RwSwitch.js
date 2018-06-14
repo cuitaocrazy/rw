@@ -1,7 +1,7 @@
 import React from 'react'
 import style from './popup.css'
-import { GET_TAB_STATUS, ENABLE_TAB_RW, DISABLE_TAB_RW } from '../../msgs/background-evt-type'
-import { tabQuery, sendMessageToTab } from '../../msgs/background-call'
+import { GET_TAB_STATUS, ENABLE_TAB_RW, DISABLE_TAB_RW } from '../../msgs/evt-type'
+import { tabQuery, sendMessageToTab } from '../../chrome-api'
 
 /**
  * 当前的Tab

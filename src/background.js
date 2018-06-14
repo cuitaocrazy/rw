@@ -1,5 +1,5 @@
 const mtk = require('./tk')
-const { TRANSLATE_WORD, GET_TTS_URL, CONVERT_TO_BASE_WORD } = require('./msgs/background-evt-type')
+const { TRANSLATE_WORD, GET_TTS_URL, CONVERT_TO_BASE_WORD } = require('./msgs/evt-type')
 
 const regex = /TKK=eval\(\'(.*?)\'\)/ // eslint-disable-line
 

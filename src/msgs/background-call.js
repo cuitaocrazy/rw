@@ -1,26 +1,7 @@
-import { TRANSLATE_WORD, GET_TTS_URL, CONVERT_TO_BASE_WORD } from './background-evt-type'
+import { TRANSLATE_WORD, GET_TTS_URL, CONVERT_TO_BASE_WORD } from './evt-type'
+import { sendMessage } from '../chrome-api'
 const dts = '&dt=bd&dt=t'
 
-/**
- *
- * @param {chrome.tabs.QueryInfo} queryInfo
- * @return {Promise<chrome.tabs.Tab[]>}
- */
-export const tabQuery = queryInfo => new Promise(resolve => chrome.tabs.query(queryInfo, resolve))
-
-/**
- *
- * @param {number} id
- * @param {*} msg
- * @return {Promise<any>}
- */
-export const sendMessageToTab = (id, msg) => new Promise(resolve => chrome.tabs.sendMessage(id, msg, resolve))
-/**
- * 向chrome发送消息
- * @param {any} msg 消息
- * @return {Promise<any>} 响应
- */
-export const sendMessage = msg => new Promise(resolve => chrome.runtime.sendMessage(msg, resolve))
 /**
  * 翻译单词
  * @param {string} word 单词

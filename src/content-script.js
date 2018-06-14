@@ -1,8 +1,8 @@
-import { chget } from './words-api'
+import { getWords } from './words-api'
 import { effectDom, recover } from './contentjs/effectDom'
 import wordBubble from './contentjs/wordBubble'
 import selectedWordBubble from './contentjs/selectedWordBubble'
-import { ENABLE_TAB_RW, DISABLE_TAB_RW, GET_TAB_STATUS } from './msgs/background-evt-type'
+import { ENABLE_TAB_RW, DISABLE_TAB_RW, GET_TAB_STATUS } from './msgs/evt-type'
 
 function atomPromiseFunc(fn) {
   let p = Promise.resolve()
@@ -10,12 +10,11 @@ function atomPromiseFunc(fn) {
     return (p = p.then(() => fn(...args)))
   }
 }
-const pchget = () => new Promise((resolve, reject) => chget(resolve))
 
 document.addEventListener('DOMContentLoaded', () => {
   chrome.storage.local.get(['defaultDisable'], ({ defaultDisable: disableFlag }) => {
     async function enable() {
-      const words = await pchget()
+      const words = await getWords()
       selectedWordBubble.createBubble()
       const keys = Object.keys(words)
       await effectDom(keys)

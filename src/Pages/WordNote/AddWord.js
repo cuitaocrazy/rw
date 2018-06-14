@@ -1,5 +1,5 @@
 import React from 'react'
-import { addOrOupdate } from '../../words-api'
+import { addOrOupdateWord } from '../../words-api'
 import style from './wordnote.css'
 
 /**
@@ -15,7 +15,7 @@ export default class AddWord extends React.Component {
       const word = this.state.word.trim().toLowerCase()
       const remark = this.state.remark.trim()
       if (word) {
-        addOrOupdate(word, remark)
+        addOrOupdateWord(word, remark)
         this.setState({ word: '', remark: '' })
       }
       evt.preventDefault()

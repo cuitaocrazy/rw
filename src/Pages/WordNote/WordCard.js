@@ -1,6 +1,6 @@
 import React from 'react'
 import style from './wordnote.css'
-import { addOrOupdate, del } from '../../words-api'
+import { addOrOupdateWord, delWord } from '../../words-api'
 import { translateWord } from '../../msgs/background-call'
 import GoogleTTS from './GoogleTTS'
 
@@ -13,7 +13,7 @@ export default class WordCard extends React.Component {
     this.state = { editing: false, remark: props.remark, gt: undefined, gtLoading: false }
     this.onSubmitHandle = evt => {
       if (this.props.remark != this.state.remark) {
-        addOrOupdate(this.props.word, this.state.remark.trim())
+        addOrOupdateWord(this.props.word, this.state.remark.trim())
       }
       this.setState({ editing: false })
       evt.preventDefault()
@@ -22,7 +22,7 @@ export default class WordCard extends React.Component {
     this.onKeyDownHandle = evt => evt.keyCode == 27 && this.setState({ editing: false, remark: props.remark })
     this.onChangeHandle = evt => this.setState({ remark: evt.target.value })
     this.onGoogleBtnClickHandle = () => translateWord(props.word).then(data => this.setState({ gt: data, gtLoading: true }))
-    this.onCardDelHandle = () => del(this.props.word)
+    this.onCardDelHandle = () => delWord(this.props.word)
   }
 
   /**
