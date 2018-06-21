@@ -1,18 +1,38 @@
 // eslint-disable-next-line
 /**
- * 查询数据
- * @param {string} area
- * @return {(keys: string[]) => Promise<{[key: string]: any}>}
+ * 获取本地数据
+ *
+ * @param {string[]} keys
+ * @return {Promise<{[key: string]: any}>}
  */
-export const chget = area => keys => new Promise(resolve => chrome.storage[area].get(keys, resolve))
+export const chgetL = keys => new Promise(resolve => chrome.storage.local.get(keys, resolve))
 
 // eslint-disable-next-line
 /**
- * 获取数据
- * @param {string} area
- * @return {(kvs: {[key: string]: any}) => Promise<void>}
+ * 存储本地数据
+ *
+ * @param {{[key: string]: any}} kvs
+ * @return {Promise<void>}
  */
-export const chset = area => kvs => new Promise(resolve => chrome.storage[area].set(kvs, resolve))
+export const chsetL = kvs => new Promise(resolve => chrome.storage.local.set(kvs, resolve))
+
+// eslint-disable-next-line
+/**
+ * 获取Google用户数据
+ *
+ * @param {string[]} keys
+ * @return {Promise<{[key: string]: any}>}
+ */
+export const chgetS = keys => new Promise(resolve => chrome.storage.sync.get(keys, resolve))
+
+// eslint-disable-next-line
+/**
+ * 存储Google用户数据
+ *
+ * @param {{[key: string]: any}} kvs
+ * @return {Promise<void>}
+ */
+export const chsetS = kvs => new Promise(resolve => chrome.storage.sync.set(kvs, resolve))
 
 /**
  * Tab查询

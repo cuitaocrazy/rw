@@ -1,10 +1,8 @@
 import * as R from 'ramda'
-import { chget, chset } from './chrome-api'
+import { chgetS, chsetS } from './chrome-api'
 
 const area = 'sync'
 const key = 'words'
-const chgetArea = chget(area)
-const chsetArea = chset(area)
 
 // eslint-disable-next-line
 /**
@@ -12,7 +10,7 @@ const chsetArea = chset(area)
  *
  * @return {Promise<{[key: string]: string}>}
  */
-export const getWords = () => chgetArea([key]).then(result => result[key] || {})
+export const getWords = () => chgetS([key]).then(result => result[key] || {})
 
 // eslint-disable-next-line
 /**
@@ -20,7 +18,7 @@ export const getWords = () => chgetArea([key]).then(result => result[key] || {})
  * @param {{[key: string]: string}} words
  * @return {Promise<void>}
  */
-export const setWords = words => chsetArea(words)
+export const setWords = words => chsetS({ [key]: words })
 
 /**
  *
@@ -31,8 +29,8 @@ export const setWords = words => chsetArea(words)
 export const addOrOupdateWord = (word, remark) =>
   getWords().then(
     R.compose(
-      R.assoc(word, remark),
-      setWords
+      setWords,
+      R.assoc(word, remark)
     )
   )
 
@@ -44,8 +42,8 @@ export const addOrOupdateWord = (word, remark) =>
 export const delWord = word =>
   getWords().then(
     R.compose(
-      R.dissoc(word),
-      setWords
+      setWords,
+      R.dissoc(word)
     )
   )
 

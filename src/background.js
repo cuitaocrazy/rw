@@ -1,13 +1,13 @@
 const mtk = require('./tk')
 const { TRANSLATE_WORD, GET_TTS_URL, CONVERT_TO_BASE_WORD } = require('./msgs/evt-type')
+const { chgetL, chsetL } = require('./chrome-api')
 
 const regex = /TKK=eval\(\'(.*?)\'\)/ // eslint-disable-line
 
-const chget = keys => new Promise((resolve, reject) => chrome.storage.local.get(keys, resolve))
-const chset = obj => new Promise((resolve, reject) => chrome.storage.local.set(obj, resolve))
+chgetL(['defaultDisable']).then(result => result['defaultDisable'] === undefined && chsetL({ defaultDisable: false }))
 
 async function saveTkk(tkk) {
-  await chset({ tkk: { key: tkk, timestamp: Math.floor(Date.now() / 3600000) } })
+  await chsetL({ tkk: { key: tkk, timestamp: Math.floor(Date.now() / 3600000) } })
 }
 
 function atomPromiseFunc(fn) {
@@ -18,7 +18,7 @@ function atomPromiseFunc(fn) {
 }
 
 async function _getTkk() {
-  const tkk = (await chget(['tkk'])).tkk
+  const tkk = (await chgetL(['tkk'])).tkk
   if (tkk && tkk.timestamp == Math.floor(Date.now() / 3600000)) {
     return tkk.key
   } else {

@@ -1,6 +1,7 @@
 import React from 'react'
 import style from './popup.css'
 import RwSwitch from './RwSwitch'
+import { chgetL, chsetL } from '../../chrome-api'
 
 /**
  * 为单词本创建一个Tab
@@ -19,10 +20,10 @@ class RwSetting extends React.Component {
       canEdit: false,
       defaultEnable: false,
     }
-    chrome.storage.local.get(['defaultDisable'], result => this.setState({ canEdit: true, defaultEnable: !result['defaultDisable'] }))
+    chgetL(['defaultDisable']).then(result => this.setState({ canEdit: true, defaultEnable: !result['defaultDisable'] }))
     this.setSettings = defaultEnable => {
       this.setState({ canEdit: false })
-      chrome.storage.local.set({ defaultDisable: !defaultEnable }, () => this.setState({ canEdit: true, defaultEnable }))
+      chsetL({ defaultDisable: !defaultEnable }).then(() => this.setState({ canEdit: true, defaultEnable }))
     }
   }
 

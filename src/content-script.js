@@ -16,9 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
     async function enable() {
       const words = await getWords()
       selectedWordBubble.createBubble()
+      wordBubble.createBubble(words)
       const keys = Object.keys(words)
       await effectDom(keys)
-      wordBubble.createBubble(words)
     }
     const disable = () => {
       recover()
@@ -33,11 +33,15 @@ document.addEventListener('DOMContentLoaded', () => {
       if (req.evtType == GET_TAB_STATUS) {
         sendResp(disableFlag)
       } else if (req.evtType == ENABLE_TAB_RW && disableFlag) {
-        atomCall(enable).then(() => sendResp('ok'))
+        atomCall(enable)
+          .then(() => sendResp('ok'))
+          .catch(() => {})
         disableFlag = false
         return true
       } else if (req.evtType == DISABLE_TAB_RW && !disableFlag) {
-        atomCall(disable).then(() => sendResp('ok'))
+        atomCall(disable)
+          .then(() => sendResp('ok'))
+          .catch(() => {})
         disableFlag = true
         return true
       }
