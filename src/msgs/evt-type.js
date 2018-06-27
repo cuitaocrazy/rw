@@ -25,3 +25,8 @@ export const ENABLE_TAB_RW = 'rw-enable-tab-rw'
  * TAB禁用单词本
  */
 export const DISABLE_TAB_RW = 'rw-disable-tab-rw'
+
+/**
+ * 播放tts
+ */
+export const PLAY_TTS = 'rw-play-tts'

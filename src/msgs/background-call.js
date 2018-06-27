@@ -1,4 +1,4 @@
-import { TRANSLATE_WORD, GET_TTS_URL, CONVERT_TO_BASE_WORD } from './evt-type'
+import { TRANSLATE_WORD, GET_TTS_URL, CONVERT_TO_BASE_WORD, PLAY_TTS } from './evt-type'
 import { sendMessage } from '../chrome-api'
 const dts = '&dt=bd&dt=t'
 
@@ -22,3 +22,11 @@ export const getTtsUrl = word => sendMessage({ evtType: GET_TTS_URL, word }).the
  * @return {Promise<string>} 原词
  */
 export const convertToBaseWord = word => sendMessage({ evtType: CONVERT_TO_BASE_WORD, word }).then(res => res.word)
+
+/**
+ * 播放单词的tts
+ *
+ * @param {string} word
+ * @return {Promise<void>}
+ */
+export const playTts = word => sendMessage({ evtType: PLAY_TTS, word })

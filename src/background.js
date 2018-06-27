@@ -1,8 +1,10 @@
 const mtk = require('./tk')
-const { TRANSLATE_WORD, GET_TTS_URL, CONVERT_TO_BASE_WORD } = require('./msgs/evt-type')
+const { TRANSLATE_WORD, GET_TTS_URL, CONVERT_TO_BASE_WORD, PLAY_TTS } = require('./msgs/evt-type')
 const { chgetL, chsetL } = require('./chrome-api')
 
 const regex = /TKK=eval\(\'(.*?)\'\)/ // eslint-disable-line
+
+const audio = document.createElement('audio')
 
 chgetL(['defaultDisable']).then(result => result['defaultDisable'] === undefined && chsetL({ defaultDisable: false }))
 
@@ -19,7 +21,7 @@ function atomPromiseFunc(fn) {
 
 async function _getTkk() {
   const tkk = (await chgetL(['tkk'])).tkk
-  if (tkk && tkk.timestamp == Math.floor(Date.now() / 3600000)) {
+  if (tkk && tkk.timestamp == Math.floor(Date.now() / 600000)) {
     return tkk.key
   } else {
     const res = await fetch('https://translate.google.cn/')
@@ -69,5 +71,18 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   } else if (request.evtType == GET_TTS_URL) {
     getTkk().then(tkk => sendResponse({ url: makeGttsUrl(request.word, mtk(request.word, tkk)) }))
     return true
+  } else if (request.evtType == PLAY_TTS) {
+    getTkk().then(tkk => {
+      const url = makeGttsUrl(request.word, mtk(request.word, tkk))
+      if (audio.src !== url) {
+        audio.src = url
+        audio.play()
+      } else {
+        audio.currentTime = 0
+        if (audio.paused) {
+          audio.play()
+        }
+      }
+    })
   }
 })

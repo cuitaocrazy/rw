@@ -1,4 +1,4 @@
-import { translateWord, getTtsUrl } from '../msgs/background-call'
+import { translateWord, playTts } from '../msgs/background-call'
 
 const as = []
 export const clear = () => {
@@ -13,15 +13,15 @@ export const createBubble = words => {
   const word = document.createElement('div')
   word.setAttribute('id', 'rw-word')
   const tts = document.createElement('div')
-  const audioPlayBtn = document.createElement('div')
-  audioPlayBtn.textContent = 'pl'
-  const audio = document.createElement('audio')
-  tts.appendChild(audioPlayBtn)
-  tts.appendChild(audio)
-  audioPlayBtn.addEventListener('click', () => {
-    audio.currentTime = 0
-    audio.paused && audio.play()
-  })
+  // const audioPlayBtn = document.createElement('div')
+  // audioPlayBtn.textContent = 'pl'
+  // const audio = document.createElement('audio')
+  // tts.appendChild(audioPlayBtn)
+  // tts.appendChild(audio)
+  // audioPlayBtn.addEventListener('click', () => {
+  //   // audio.currentTime = 0
+  //   // audio.paused && audio.play()
+  // })
 
   const remark = document.createElement('div')
   remark.setAttribute('id', 'rw-remark')
@@ -48,7 +48,13 @@ export const createBubble = words => {
         bubble.style.left = Math.max(5, Math.floor(rect.left)) + 'px'
         bubble.classList.add('rw-show')
         gtEl.textContent = ''
-        getTtsUrl(key).then(url => (audio.src = url))
+
+        tts.innerHTML = ''
+        const ttsBtn = document.createElement('div')
+        ttsBtn.textContent = 'pl'
+        tts.appendChild(ttsBtn)
+        tts.addEventListener('click', () => playTts(key))
+        // getTtsUrl(key).then(url => (audio.src = url))
         translateWord(key).then(data => {
           if (window.getComputedStyle(bubble).visibility !== 'hidden') {
             const explanations = data[1]
